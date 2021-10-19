@@ -13,11 +13,16 @@ namespace Tic_tac_toe
         string zero;
         string cross;
         string[,] grid;
+        bool status;
         int progress;
 
         public string[,] getGrid()
         {
             return grid;
+        }
+
+        public bool getStatus() {
+            return status;
         }
 
         public Game(int size, string emptyCell, string zero, string cross)
@@ -26,6 +31,7 @@ namespace Tic_tac_toe
             this.emptyCell = emptyCell;
             this.zero = zero;
             this.cross = cross;
+            status = false;
             progress = 0;
             generateGrid();
         }
@@ -93,11 +99,13 @@ namespace Tic_tac_toe
 
                 if(counter_1 == size || counter_3 == size) {
                     st = "Cross Win!";
+                    status = true;
                     return st;
                 }
 
                 if (counter_2 == size || counter_4 == size) {
                     st = "Zero Win!";
+                    status = true;
                     return st;
                 }
 
@@ -109,17 +117,20 @@ namespace Tic_tac_toe
 
             if(counter_5 == size || counter_7 == size) {
                 st = "Cross Win!";
+                status = true;
                 return st;
             }
 
             if(counter_6 == size || counter_8 == size) {
                 st = "Zero Win!";
+                status = true;
                 return st;
             }
 
             if(progress == size * size)
             {
                 st = "This is draw!";
+                status = true;
                 return st;
             }
 
