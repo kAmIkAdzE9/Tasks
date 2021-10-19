@@ -14,7 +14,6 @@ namespace Tic_tac_toe
         string cross;
         string[,] grid;
         int progress;
-        string status;
 
         public string[,] getGrid()
         {
@@ -27,8 +26,7 @@ namespace Tic_tac_toe
             this.emptyCell = emptyCell;
             this.zero = zero;
             this.cross = cross;
-            progress = 1;
-            status = "in progress";
+            progress = 0;
             generateGrid();
         }
 
@@ -130,6 +128,7 @@ namespace Tic_tac_toe
 
         public string makeMove(int rowIndex, int columnIndex)
         {
+            string status = "in progress";
             if(checkStatus() != "") {
                 status = checkStatus();
                 return status;
@@ -145,7 +144,7 @@ namespace Tic_tac_toe
                 status = "The cell [" + rowIndex + ", " + columnIndex + "] is used. It is " + grid[rowIndex, columnIndex];
             }
 
-            if(progress % 2 == 0)
+            if(progress % 2 != 0)
             {
                 if (grid[rowIndex, columnIndex] == emptyCell)
                 {

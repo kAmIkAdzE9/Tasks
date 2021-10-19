@@ -34,9 +34,13 @@ namespace Tic_tac_toe
 
             int[,] scenario = {{1,1}, {0, 1}, {0, 0}, {2, 2}, {2, 0}, {1, 0}, {0, 2}};
             int[,] scenario_2 = {{0, 0}, {1, 1}, {0, 1}, {1, 2}, {0, 2}};
-            int[,] scenario_3 = {{0, 0}, {0, 1}, {1, 1}, {0, 2}, {1, 1}, {1, 2}};
-
-            PlayGame(size, emptyCell, zero, cross, scenario_3, 6);
+            int[,] scenario_3 = {{0, 0}, {0, 1}, {1, 1}, {0, 2}, {2, 2}, {1, 2}};
+            int[,] scenario_4 = {{0, 2}, {0, 1}, {1, 1}, {0, 0}, {2, 0}};
+            int[,] scenario_5 = {{0, 1}, {0, 2}, {1, 1}, {1, 2}, {2, 1}};
+            int[,] scenario_6 = {{10, 0}, {0, 10}, {1, 1}};
+            int[,] scenario_7 = {{0, 1}, {0, 0}, {0, 2}, {1, 1}, {1, 2}, {2, 2}};
+            int[,] scenario_8 = {{1, 1}, {0, 0}, {0, 2}, {2, 0}, {1, 0}, {1, 2}, {0, 1}, {2, 1}, {2, 2}};
+            PlayGame(size, emptyCell, zero, cross, scenario_8, 9);
         }
     }
 }
