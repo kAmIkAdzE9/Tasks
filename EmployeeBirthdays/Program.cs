@@ -37,7 +37,9 @@ namespace EmployeeBirthdays
         static void PrintMonth(int shift)
         {
             DateTime today = DateTime.Now;
-            Console.WriteLine(new DateTime(today.Year, today.Month + shift, today.Day).ToString("MMMM yyyy", new CultureInfo("uk")));
+            int k = Math.Abs(today.Month + shift) / 12;
+
+            Console.WriteLine(new DateTime(today.Year + k, Math.Abs(today.Month + shift) % 12, today.Day).ToString("MMMM yyyy", new CultureInfo("uk")));
         }
 
         static void PrintEmployees(List<Employee> employees, int k)
@@ -61,16 +63,30 @@ namespace EmployeeBirthdays
         static void PrintEmployees_2(Dictionary<int, List<Employee>> employees, int k)
         {
             DateTime today = DateTime.Now;
-            for (int i = 0; i <= k; i++)
+            for (int i = 0; i <= Math.Abs(k); i++)
             {
                 foreach (KeyValuePair<int, List<Employee>> keyValue in employees)
                 {
-                    if (keyValue.Key == today.Month + i)
+                    if (k > 0)
                     {
-                        PrintMonth(i);
-                        foreach (Employee employee in keyValue.Value)
+                        if (keyValue.Key == Math.Abs(today.Month + i) % 12)
                         {
-                            PrintEmployee(employee);
+                            PrintMonth(i);
+                            foreach (Employee employee in keyValue.Value)
+                            {
+                                PrintEmployee(employee);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (keyValue.Key == Math.Abs(today.Month - i) % 12)
+                        {
+                            PrintMonth(-i);
+                            foreach (Employee employee in keyValue.Value)
+                            {
+                                PrintEmployee(employee);
+                            }
                         }
                     }
                 }
@@ -107,10 +123,12 @@ namespace EmployeeBirthdays
             employees.Add(new Employee("Olexander", new DateTime(1991, 9, 04)));
             employees.Add(new Employee("Oleg", new DateTime(1992, 11, 29)));
             employees.Add(new Employee("Anton", new DateTime(1993, 10, 08)));
+            employees.Add(new Employee("Artur", new DateTime(1996, 02, 28)));
+            employees.Add(new Employee("Danilo", new DateTime(1998, 01, 16)));
 
-            PrintEmployees(employees, 2); //Not using dictionary
+            //PrintEmployees(employees, 2); //Not using dictionary
             Console.WriteLine();
-            PrintEmployees_2(getDictOfEmployees(employees), 2); //Using Dictionary
+            PrintEmployees_2(getDictOfEmployees(employees), 5); //Using Dictionary
         }
     }
 }
