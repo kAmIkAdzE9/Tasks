@@ -16,11 +16,11 @@ namespace Tic_tac_toe
             }
         }
 
-        static void PlayGame(int size, string emptyCell, string zero, string cross, int[,] scenario, int n)
+        static void PlayGame(int size, string emptyCell, string zero, string cross, int[,] scenario)
         {
             Game game = new Game(size, emptyCell, zero, cross);
 
-            for (int i = 0; i < n; i++)
+            for (int i = 0; i < scenario.GetLength(0); i++)
             {
                 Console.WriteLine(game.makeMove(scenario[i, 0], scenario[i, 1]));
             }
@@ -57,7 +57,7 @@ namespace Tic_tac_toe
             string cross = "2";
             int size = 3;
 
-            //int[,] scenario = { { 1, 1 }, { 0, 1 }, { 0, 0 }, { 2, 2 }, { 2, 0 }, { 1, 0 }, { 0, 2 } };
+            //int[,] scenario = { { 1, 1 }, { 0, 1 }, { 0, 0 }, { 2, 2 }, { 2, 0 }, { 1, 0 }, { 0, 2 } };          
             //int[,] scenario_2 = { { 0, 0 }, { 1, 1 }, { 0, 1 }, { 1, 2 }, { 0, 2 } };
             //int[,] scenario_3 = { { 0, 0 }, { 0, 1 }, { 1, 1 }, { 0, 2 }, { 2, 2 }, { 1, 2 } };
             //int[,] scenario_4 = { { 0, 2 }, { 0, 1 }, { 1, 1 }, { 0, 0 }, { 2, 0 } };
@@ -65,7 +65,7 @@ namespace Tic_tac_toe
             //int[,] scenario_6 = { { 10, 0 }, { 0, 10 }, { 1, 1 } };
             //int[,] scenario_7 = { { 0, 1 }, { 0, 0 }, { 0, 2 }, { 1, 1 }, { 1, 2 }, { 2, 2 } };
             //int[,] scenario_8 = { { 1, 1 }, { 0, 0 }, { 0, 2 }, { 2, 0 }, { 1, 0 }, { 1, 2 }, { 0, 1 }, { 2, 1 }, { 2, 2 } };
-            //PlayGame(size, emptyCell, zero, cross, scenario_6, 3);
+            //PlayGame(size, emptyCell, zero, cross, scenario_4);
 
             PlayGame_2(size, emptyCell, zero, cross);
         }
