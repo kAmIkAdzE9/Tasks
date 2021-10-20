@@ -77,7 +77,7 @@ namespace EmployeeBirthdays
             }
         }
 
-        static Dictionary<int, List<Employee>> getListOfTheMonths(List<Employee> employees)
+        static Dictionary<int, List<Employee>> getDictOfEmployees(List<Employee> employees)
         {
             List<Employee> newList = employees.OrderBy(e => e.getBirthday().Day).ToList();
             Dictionary<int, List<Employee>> dict = new Dictionary<int, List<Employee>>();
@@ -110,7 +110,7 @@ namespace EmployeeBirthdays
 
             PrintEmployees(employees, 2); //Not using dictionary
             Console.WriteLine();
-            PrintEmployees_2(getListOfTheMonths(employees), 2); //Using Dictionary
+            PrintEmployees_2(getDictOfEmployees(employees), 2); //Using Dictionary
         }
     }
 }
