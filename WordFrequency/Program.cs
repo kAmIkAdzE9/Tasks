@@ -1,12 +1,33 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace WordFrequency
 {
     class Program
     {
+        static Dictionary<string, int> GetCountOfWord(string text) {
+            Dictionary<string, int> output = new Dictionary<string, int>();
+
+            string[] words = text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+            foreach(string word in words) {
+                if(output.ContainsKey(word)) {
+                    output[word] += 1;
+                }
+                else {
+                    output[word] = 1;
+                }
+            }
+
+            return output;
+        }
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            string text = "one two three one two two four three . five six four one";
+            Dictionary<string, int> dict = GetCountOfWord(text);
+            foreach(KeyValuePair<string, int> keyValue in dict) {
+                Console.WriteLine(keyValue.Key + " " + keyValue.Value);
+            }
         }
     }
 }
