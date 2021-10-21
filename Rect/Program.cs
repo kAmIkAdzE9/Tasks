@@ -87,9 +87,7 @@ namespace Rect
             {
                 return new Rect()
                 {
-                    topLeft = topLeft.Move(offset),
-                    width = this.width + offset,
-                    height = this.height + offset
+                    topLeft = topLeft.Move(offset)
                 };
             }
         }
