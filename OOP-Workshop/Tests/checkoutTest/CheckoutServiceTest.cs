@@ -65,10 +65,12 @@ namespace OOP_Workshop
 
             checkoutService.addProduct(new Product(7, "Milk", Category.MILK));
             checkoutService.addProduct(new Product(3, "Bred", Category.Bred));
-            checkoutService.useOffer(new AnyGoodsOffer(6, 2));
+
+            AnyGoodsOffer offer = new AnyGoodsOffer(6, 2); 
+            checkoutService.useOffer(offer);         
             Check check = checkoutService.closeCheck();
 
-            Assert.Equal(check.getTotalPoints(), 12);
+            Assert.Equal(12, check.getTotalPoints());
         }
 
         [Fact]
@@ -106,9 +108,9 @@ namespace OOP_Workshop
             checkoutService.openCheck();
 
             checkoutService.addProduct(new Product(7, "Milk", Category.MILK));
-            FactorByCategoryOffer offer = new FactorByCategoryOffer(Category.MILK, 2);        
+            FactorByCategoryOffer offer = new FactorByCategoryOffer(Category.MILK, 2);
+            checkoutService.useOffer(offer);      
             Check check = checkoutService.closeCheck();
-            offer.apply(check);
             
             Assert.Equal(14, check.getTotalPoints());
         }
@@ -121,8 +123,8 @@ namespace OOP_Workshop
             FactorByCategoryOffer offer = new FactorByCategoryOffer(Category.MILK, 2);
             checkoutService.addProduct(new Product(7, "Milk", Category.MILK));      
             offer.setExpiration(DateTime.Now.AddYears(-1));
+            checkoutService.useOffer(offer);
             Check check = checkoutService.closeCheck();
-            offer.apply(check);
             
             Assert.Equal(7, check.getTotalPoints());      
         }

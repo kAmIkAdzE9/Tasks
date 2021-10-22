@@ -41,13 +41,17 @@ namespace OOP_Workshop
 
         public void apply(Check check) {
             if(checkExpiration() && checkCondition(check)) {
-                addPoints(check);
+                addPoints(check, calculatePoints(check));
             }
         }
 
-        protected virtual void addPoints(Check check)
+        protected void addPoints(Check check, int points)
         {
-            check.addPoints(check.getTotalCost());
+            check.addPoints(points);
+        }
+        
+        protected virtual int calculatePoints(Check check) {
+            return check.getTotalCost();
         }
 
         protected virtual bool checkCondition(Check check)

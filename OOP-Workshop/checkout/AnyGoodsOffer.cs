@@ -13,9 +13,8 @@ namespace OOP_Workshop
             this.points = points;
         }
 
-        protected override void addPoints(Check check)
-        {
-            check.addPoints(points);
+        protected override int calculatePoints(Check check) {
+            return points;
         }
 
         protected override bool checkCondition(Check check)
