@@ -41,7 +41,18 @@ namespace OOP_Workshop
             checkoutService.addProduct(new Product(3, "Bred"));
             Check bredCheck = checkoutService.closeCheck();
             Assert.Equal(bredCheck.getTotalCost(), 3);
+        }
 
+        [Fact]
+        void closeCheck__calcTotalPoints() {
+            CheckoutService checkoutService = new CheckoutService();
+            checkoutService.openCheck();
+
+            checkoutService.addProduct(new Product(7, "Milk"));
+            checkoutService.addProduct(new Product(3, "Bred"));
+            Check check = checkoutService.closeCheck();
+
+            Assert.Equal(check.getTotalPoints(), 10);
         }
     }
 }

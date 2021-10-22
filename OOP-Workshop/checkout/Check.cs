@@ -26,5 +26,9 @@ namespace OOP_Workshop
         {
             products.Add(product);
         }
+
+        public int getTotalPoints() {
+            return getTotalCost();
+        } 
     }
 }
