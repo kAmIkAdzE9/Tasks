@@ -81,7 +81,7 @@ namespace OOP_Workshop
             checkoutService.useOffer(new AnyGoodsOffer(6, 2));
             Check check = checkoutService.closeCheck();
 
-            Assert.Equal(check.getTotalPoints(), 3);
+            Assert.Equal(5, check.getTotalPoints());
         }
 
         [Fact]

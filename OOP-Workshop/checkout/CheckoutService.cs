@@ -28,7 +28,7 @@ namespace OOP_Workshop
         }
 
         public void useOffer(Offer offer) {
-            offer.aplly(check);
+            offer.apply(check);
         }
     }
 }

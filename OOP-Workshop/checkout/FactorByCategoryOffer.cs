@@ -21,7 +21,7 @@ namespace OOP_Workshop
             this.factor = factor;
         }
 
-        public override void aplly(Check check) {
+        protected override void addPoints(Check check) {
             int points = check.getCostByCategory(category);
             check.addPoints(points * (factor - 1));
         }

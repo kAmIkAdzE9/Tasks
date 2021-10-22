@@ -13,11 +13,9 @@ namespace OOP_Workshop
             this.points = points;
         }
 
-        public override void aplly(Check check)
+        protected override void addPoints(Check check)
         {
-            if (totalCost <= check.getTotalCost()) {
-                check.addPoints(points);
-            }
+            check.addPoints(points);
         }
     }
 }

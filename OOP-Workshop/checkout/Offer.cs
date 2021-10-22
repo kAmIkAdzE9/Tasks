@@ -1,39 +1,57 @@
 using System;
 
-namespace OOP_Workshop {
-    public abstract class Offer {
+namespace OOP_Workshop
+{
+    public abstract class Offer
+    {
         DateTime expiration;
         DateTime defaultExpiration = DateTime.Now.AddYears(1);
 
-        internal void setExpiration(DateTime expiration) {
+        internal void setExpiration(DateTime expiration)
+        {
             this.expiration = expiration;
             this.defaultExpiration = DateTime.Now.AddYears(1);
         }
 
-        internal DateTime getExpiration() {
+        internal DateTime getExpiration()
+        {
             return expiration;
         }
 
-        internal void setDefaultExpiration(DateTime expiration) {
+        internal void setDefaultExpiration(DateTime expiration)
+        {
             this.expiration = expiration;
             this.defaultExpiration = DateTime.Now.AddYears(1);
         }
 
-        internal DateTime getDefaultExpiration() {
+        internal DateTime getDefaultExpiration()
+        {
             return defaultExpiration;
         }
 
-        public Offer() {
+        public Offer()
+        {
             expiration = defaultExpiration;
         }
 
-        public Offer(DateTime expiration) {
+        public Offer(DateTime expiration)
+        {
             this.expiration = expiration;
         }
 
-        public abstract void aplly(Check check);
+        public void apply(Check check) {
+            if(checkExpiration()) {
+                addPoints(check);
+            }
+        }
 
-        public bool checkExpiration() {
+        protected virtual void addPoints(Check check)
+        {
+            check.addPoints(check.getTotalCost());
+        }
+
+        public bool checkExpiration()
+        {
             return DateTime.Now < expiration;
         }
     }
