@@ -1,4 +1,5 @@
 using Xunit;
+using System;
 
 namespace OOP_Workshop
 {
@@ -84,7 +85,7 @@ namespace OOP_Workshop
         }
 
         [Fact]
-        void useOfferr__factorByCategory()
+        void useOffer__factorByCategory()
         {
             CheckoutService checkoutService = new CheckoutService();
             checkoutService.openCheck();
@@ -97,6 +98,21 @@ namespace OOP_Workshop
             Check check = checkoutService.closeCheck();
 
             Assert.Equal(check.getTotalPoints(), 31);
+        }
+
+        [Fact]
+        void useOffer__checkDefaultExpiration() {
+            FactorByCategoryOffer offer = new FactorByCategoryOffer(Category.MILK, 2);
+            
+            Assert.Equal(offer.checkExpiration(), true);
+        }
+
+        [Fact]
+        void useOffer__checkExpiration() {
+            FactorByCategoryOffer offer = new FactorByCategoryOffer(Category.MILK, 2);
+            offer.setExpiration(DateTime.Now.AddYears(-1));
+            
+            Assert.Equal(offer.checkExpiration(), false);
         }
     }
 }

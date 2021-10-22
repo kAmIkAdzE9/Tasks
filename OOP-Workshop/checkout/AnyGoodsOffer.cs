@@ -4,8 +4,9 @@ namespace OOP_Workshop
 {
     public class AnyGoodsOffer : Offer
     {
-        public int totalCost;
-        public int points;
+        int totalCost;
+        int points;
+        
         public AnyGoodsOffer(int totalCost, int points)
         {
             this.totalCost = totalCost;
@@ -16,7 +17,7 @@ namespace OOP_Workshop
         {
             if (totalCost <= check.getTotalCost()) {
                 check.addPoints(points);
-            }             
+            }
         }
     }
 }
