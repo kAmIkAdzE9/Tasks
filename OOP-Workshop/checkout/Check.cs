@@ -7,9 +7,11 @@ namespace OOP_Workshop
     public class Check
     {
         private List<Product> products;
+        private int points;
 
         public Check() {
             products = new List<Product>();
+            points = 0;
         }
 
         public int getTotalCost()
@@ -28,7 +30,11 @@ namespace OOP_Workshop
         }
 
         public int getTotalPoints() {
-            return getTotalCost();
+            return getTotalCost() + points;
         } 
+
+        internal void addPoints(int points) {
+            this.points += points;
+        }
     }
 }

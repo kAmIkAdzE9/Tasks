@@ -26,5 +26,11 @@ namespace OOP_Workshop
             check = null;
             return closedCheck;
         }
+
+        public void userOffer(AnyGoodsOffer offer) {
+            if(offer.totalCost <= check.getTotalCost()) {
+                check.addPoints(offer.points);
+            }
+        }
     }
 }

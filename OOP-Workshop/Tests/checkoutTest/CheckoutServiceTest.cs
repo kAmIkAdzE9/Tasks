@@ -54,5 +54,30 @@ namespace OOP_Workshop
 
             Assert.Equal(check.getTotalPoints(), 10);
         }
+
+        [Fact]
+        void useOffer__addOfferPoints() {
+            CheckoutService checkoutService = new CheckoutService();
+            checkoutService.openCheck();
+
+            checkoutService.addProduct(new Product(7, "Milk"));
+            checkoutService.addProduct(new Product(3, "Bred"));
+            checkoutService.userOffer(new AnyGoodsOffer(6, 2));
+            Check check = checkoutService.closeCheck();
+
+            Assert.Equal(check.getTotalPoints(), 12);
+        }
+
+        [Fact]
+        void useOffer__whenCostLessThanRequired__doNothing() {
+            CheckoutService checkoutService = new CheckoutService();
+            checkoutService.openCheck();
+
+            checkoutService.addProduct(new Product(3, "Bred"));
+            checkoutService.userOffer(new AnyGoodsOffer(6, 2));
+            Check check = checkoutService.closeCheck();
+
+            Assert.Equal(check.getTotalPoints(), 3);
+        }
     }
 }
