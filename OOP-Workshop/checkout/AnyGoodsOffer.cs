@@ -2,7 +2,7 @@ using System;
 
 namespace OOP_Workshop
 {
-    public class AnyGoodsOffer
+    public class AnyGoodsOffer: Offer
     {
         public int totalCost;
         public int points;
@@ -10,6 +10,10 @@ namespace OOP_Workshop
         {
             this.totalCost = totalCost;
             this.points = points;
+        }
+
+         public override void aplly(Check check) {
+
         }
     }
 }

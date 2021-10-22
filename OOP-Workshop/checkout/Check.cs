@@ -9,7 +9,8 @@ namespace OOP_Workshop
         private List<Product> products;
         private int points;
 
-        public Check() {
+        public Check()
+        {
             products = new List<Product>();
             points = 0;
         }
@@ -29,12 +30,31 @@ namespace OOP_Workshop
             products.Add(product);
         }
 
-        public int getTotalPoints() {
+        public int getTotalPoints()
+        {
             return getTotalCost() + points;
-        } 
+        }
 
-        internal void addPoints(int points) {
+        internal void addPoints(int points)
+        {
             this.points += points;
+        }
+
+        internal int getCostByCategory(Category category)
+        {
+            // return products.stream()
+            //         .filter(p->p.category == category)
+            //         .mapToInt(p->p.price)
+            //         .reduce(0, (a, b)->a + b);
+            int output = 0;
+            foreach (Product product in products)
+            {
+                if (product.getCategory() == category)
+                {
+                    output += product.GetPrice();
+                }
+            }
+            return output;
         }
     }
 }
