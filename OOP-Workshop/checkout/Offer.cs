@@ -5,21 +5,21 @@ namespace OOP_Workshop {
         DateTime expiration;
         DateTime defaultExpiration = DateTime.Now.AddYears(1);
 
-        public void setExpiration(DateTime expiration) {
+        internal void setExpiration(DateTime expiration) {
             this.expiration = expiration;
             this.defaultExpiration = DateTime.Now.AddYears(1);
         }
 
-        public DateTime getExpiration() {
+        internal DateTime getExpiration() {
             return expiration;
         }
 
-        public void setDefaultExpiration(DateTime expiration) {
+        internal void setDefaultExpiration(DateTime expiration) {
             this.expiration = expiration;
             this.defaultExpiration = DateTime.Now.AddYears(1);
         }
 
-        public DateTime getDefaultExpiration() {
+        internal DateTime getDefaultExpiration() {
             return defaultExpiration;
         }
 
