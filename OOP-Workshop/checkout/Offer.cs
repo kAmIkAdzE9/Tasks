@@ -2,7 +2,7 @@ using System;
 
 namespace OOP_Workshop
 {
-    public class Offer
+    public abstract class Offer
     {
         DateTime expiration;
         DateTime defaultExpiration = DateTime.Now.AddYears(1);
