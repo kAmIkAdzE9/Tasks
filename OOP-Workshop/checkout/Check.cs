@@ -22,7 +22,7 @@ namespace OOP_Workshop
             return totalCost;
         }
 
-        public void addProduct(Product product)
+        internal void addProduct(Product product)
         {
             products.Add(product);
         }

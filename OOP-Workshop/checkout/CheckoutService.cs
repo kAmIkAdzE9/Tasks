@@ -11,7 +11,7 @@ namespace OOP_Workshop
             check = new Check();
         }
 
-        public void addProduct(Product product)
+        internal void addProduct(Product product)
         {
             if (check == null)
             {
