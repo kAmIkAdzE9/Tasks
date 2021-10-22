@@ -17,5 +17,10 @@ namespace OOP_Workshop
         {
             check.addPoints(points);
         }
+
+        protected override bool checkCondition(Check check)
+        {
+            return totalCost <= check.getTotalCost();
+        }
     }
 }

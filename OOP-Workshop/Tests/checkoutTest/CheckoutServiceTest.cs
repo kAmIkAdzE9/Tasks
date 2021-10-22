@@ -81,7 +81,7 @@ namespace OOP_Workshop
             checkoutService.useOffer(new AnyGoodsOffer(6, 2));
             Check check = checkoutService.closeCheck();
 
-            Assert.Equal(5, check.getTotalPoints());
+            Assert.Equal(3, check.getTotalPoints());
         }
 
         [Fact]
@@ -101,18 +101,30 @@ namespace OOP_Workshop
         }
 
         [Fact]
-        void useOffer__checkDefaultExpiration() {
-            FactorByCategoryOffer offer = new FactorByCategoryOffer(Category.MILK, 2);
+        void useOffer__DefaultExpiration() {
+            CheckoutService checkoutService = new CheckoutService();
+            checkoutService.openCheck();
+
+            checkoutService.addProduct(new Product(7, "Milk", Category.MILK));
+            FactorByCategoryOffer offer = new FactorByCategoryOffer(Category.MILK, 2);        
+            Check check = checkoutService.closeCheck();
+            offer.apply(check);
             
-            Assert.Equal(offer.checkExpiration(), true);
+            Assert.Equal(14, check.getTotalPoints());
         }
 
         [Fact]
-        void useOffer__checkExpiration() {
+        void useOffer__changeExpiration() {
+            CheckoutService checkoutService = new CheckoutService();
+            checkoutService.openCheck();
+
             FactorByCategoryOffer offer = new FactorByCategoryOffer(Category.MILK, 2);
+            checkoutService.addProduct(new Product(7, "Milk", Category.MILK));      
             offer.setExpiration(DateTime.Now.AddYears(-1));
+            Check check = checkoutService.closeCheck();
+            offer.apply(check);
             
-            Assert.Equal(offer.checkExpiration(), false);
+            Assert.Equal(7, check.getTotalPoints());      
         }
     }
 }

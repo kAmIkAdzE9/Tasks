@@ -25,5 +25,10 @@ namespace OOP_Workshop
             int points = check.getCostByCategory(category);
             check.addPoints(points * (factor - 1));
         }
+
+        protected override bool checkCondition(Check check)
+        {
+            return check.getCostByCategory(category) != 0;
+        }
     }
 }

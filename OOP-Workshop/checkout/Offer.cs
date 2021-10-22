@@ -2,7 +2,7 @@ using System;
 
 namespace OOP_Workshop
 {
-    public abstract class Offer
+    public class Offer
     {
         DateTime expiration;
         DateTime defaultExpiration = DateTime.Now.AddYears(1);
@@ -40,7 +40,7 @@ namespace OOP_Workshop
         }
 
         public void apply(Check check) {
-            if(checkExpiration()) {
+            if(checkExpiration() && checkCondition(check)) {
                 addPoints(check);
             }
         }
@@ -50,7 +50,12 @@ namespace OOP_Workshop
             check.addPoints(check.getTotalCost());
         }
 
-        public bool checkExpiration()
+        protected virtual bool checkCondition(Check check)
+        {
+            return true;
+        }
+
+        protected bool checkExpiration()
         {
             return DateTime.Now < expiration;
         }
