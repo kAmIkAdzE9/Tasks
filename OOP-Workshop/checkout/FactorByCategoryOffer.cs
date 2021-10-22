@@ -22,7 +22,8 @@ namespace OOP_Workshop
         }
 
         public override void aplly(Check check) {
-
+            int points = check.getCostByCategory(category);
+            check.addPoints(points * (factor - 1));
         }
     }
 }

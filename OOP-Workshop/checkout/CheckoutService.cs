@@ -28,18 +28,7 @@ namespace OOP_Workshop
         }
 
         public void useOffer(Offer offer) {
-            if (offer is FactorByCategoryOffer) // offer instanceof FactorByCategoryOffer
-            {
-                FactorByCategoryOffer fbOffer = (FactorByCategoryOffer)offer;
-                int points = check.getCostByCategory(fbOffer.GetCategory());
-                check.addPoints(points * (fbOffer.GetFactor() - 1));
-            }
-            else if (offer is AnyGoodsOffer) // offer instanceof AnyGoodsOffer
-            {
-                AnyGoodsOffer agOffer = (AnyGoodsOffer)offer;
-                if (agOffer.totalCost <= check.getTotalCost())
-                    check.addPoints(agOffer.points);
-            }
+            offer.aplly(check);
         }
     }
 }
