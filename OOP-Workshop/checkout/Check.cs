@@ -15,6 +15,10 @@ namespace OOP_Workshop
             points = 0;
         }
 
+        public List<Product> getProducts() {
+            return products;
+        }
+
         public int getTotalCost()
         {
             int totalCost = 0;
@@ -40,12 +44,8 @@ namespace OOP_Workshop
             this.points += points;
         }
 
-        internal int getCostByCategory(Category category)
+        public int getCostByCategory(Category category)
         {
-            // return products.stream()
-            //         .filter(p->p.category == category)
-            //         .mapToInt(p->p.price)
-            //         .reduce(0, (a, b)->a + b);
             int output = 0;
             foreach (Product product in products)
             {
@@ -55,6 +55,34 @@ namespace OOP_Workshop
                 }
             }
             return output;
+        }
+
+        public int getCount() {
+            return products.Count;
+        }
+
+        public int getCostByProduct(Product product) {
+            int cost = 0;
+            foreach (Product p in products)
+            {
+                if (product == p)
+                {
+                    cost += product.GetPrice();
+                }
+            }
+            return cost;
+        }
+
+        public int getCostByBrand(string brand) {
+            int cost = 0;
+            foreach (Product p in products)
+            {
+                if (brand == p.getBrand())
+                {
+                    cost += p.GetPrice();
+                }
+            }
+            return cost;
         }
     }
 }

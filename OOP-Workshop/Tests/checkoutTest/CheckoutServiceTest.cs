@@ -5,13 +5,31 @@ namespace OOP_Workshop
 {
     public class CheckoutServiceTest
     {
+        CheckoutService checkoutService;
+        Product Milk_7;
+        Product Bred_3;
+        AnyGoodsOffer anyGoodsOffer;
+        FactorByCategoryOffer factorByMilkOffer;
+        FactorByCategoryOffer factorByBredOffer;
+        BrandOffer brandOffer;
+
+        public CheckoutServiceTest()
+        {
+            checkoutService = new CheckoutService();
+            Milk_7 = new Product(7, "Milk", "Волошкове поле", Category.MILK);
+            Bred_3 = new Product(3, "Bred", Category.Bred);
+            anyGoodsOffer = new AnyGoodsOffer(6, 2);
+            factorByMilkOffer = new FactorByCategoryOffer(Category.MILK, 2);
+            factorByBredOffer = new FactorByCategoryOffer(Category.Bred, 3);
+            brandOffer = new BrandOffer("Волошкове поле");
+        }
+
         [Fact]
         void closeCheck_withOneProduct()
         {
-            CheckoutService checkoutService = new CheckoutService();
             checkoutService.openCheck();
 
-            checkoutService.addProduct(new Product(7, "Milk", Category.MILK));
+            checkoutService.addProduct(Milk_7);
             Check check = checkoutService.closeCheck();
 
             Assert.Equal(check.getTotalCost(), 7);
@@ -20,11 +38,10 @@ namespace OOP_Workshop
         [Fact]
         void closeCheck_withTwoProduct()
         {
-            CheckoutService checkoutService = new CheckoutService();
             checkoutService.openCheck();
 
-            checkoutService.addProduct(new Product(7, "Milk", Category.MILK));
-            checkoutService.addProduct(new Product(3, "Bred", Category.Bred));
+            checkoutService.addProduct(Milk_7);
+            checkoutService.addProduct(Bred_3);
             Check check = checkoutService.closeCheck();
 
             Assert.Equal(check.getTotalCost(), 10);
@@ -33,13 +50,13 @@ namespace OOP_Workshop
         [Fact]
         void addProduct__whenCheckIsClosed__opensNewCheck()
         {
-            CheckoutService checkoutService = new CheckoutService();
+            checkoutService.openCheck();
 
-            checkoutService.addProduct(new Product(7, "Milk", Category.MILK));
+            checkoutService.addProduct(Milk_7);
             Check milkCheck = checkoutService.closeCheck();
             Assert.Equal(milkCheck.getTotalCost(), 7);
 
-            checkoutService.addProduct(new Product(3, "Bred", Category.Bred));
+            checkoutService.addProduct(Bred_3);
             Check bredCheck = checkoutService.closeCheck();
             Assert.Equal(bredCheck.getTotalCost(), 3);
         }
@@ -47,11 +64,10 @@ namespace OOP_Workshop
         [Fact]
         void closeCheck__calcTotalPoints()
         {
-            CheckoutService checkoutService = new CheckoutService();
             checkoutService.openCheck();
 
-            checkoutService.addProduct(new Product(7, "Milk", Category.MILK));
-            checkoutService.addProduct(new Product(3, "Bred", Category.Bred));
+            checkoutService.addProduct(Milk_7);
+            checkoutService.addProduct(Bred_3);
             Check check = checkoutService.closeCheck();
 
             Assert.Equal(check.getTotalPoints(), 10);
@@ -60,14 +76,12 @@ namespace OOP_Workshop
         [Fact]
         void useOffer__addOfferPoints()
         {
-            CheckoutService checkoutService = new CheckoutService();
             checkoutService.openCheck();
 
-            checkoutService.addProduct(new Product(7, "Milk", Category.MILK));
-            checkoutService.addProduct(new Product(3, "Bred", Category.Bred));
+            checkoutService.addProduct(Milk_7);
+            checkoutService.addProduct(Bred_3);
 
-            AnyGoodsOffer offer = new AnyGoodsOffer(6, 2); 
-            checkoutService.useOffer(offer);         
+            checkoutService.useOffer(anyGoodsOffer);
             Check check = checkoutService.closeCheck();
 
             Assert.Equal(12, check.getTotalPoints());
@@ -76,11 +90,10 @@ namespace OOP_Workshop
         [Fact]
         void useOffer__whenCostLessThanRequired__doNothing()
         {
-            CheckoutService checkoutService = new CheckoutService();
             checkoutService.openCheck();
 
-            checkoutService.addProduct(new Product(3, "Bred", Category.Bred));
-            checkoutService.useOffer(new AnyGoodsOffer(6, 2));
+            checkoutService.addProduct(Bred_3);
+            checkoutService.useOffer(anyGoodsOffer);
             Check check = checkoutService.closeCheck();
 
             Assert.Equal(3, check.getTotalPoints());
@@ -89,44 +102,83 @@ namespace OOP_Workshop
         [Fact]
         void useOffer__factorByCategory()
         {
-            CheckoutService checkoutService = new CheckoutService();
             checkoutService.openCheck();
 
-            checkoutService.addProduct(new Product(7, "Milk", Category.MILK));
-            checkoutService.addProduct(new Product(7, "Milk", Category.MILK));
-            checkoutService.addProduct(new Product(3, "Bred", Category.Bred));
+            checkoutService.addProduct(Milk_7);
+            checkoutService.addProduct(Milk_7);
+            checkoutService.addProduct(Bred_3);
 
-            checkoutService.useOffer(new FactorByCategoryOffer(Category.MILK, 2));
+            checkoutService.useOffer(factorByMilkOffer);
             Check check = checkoutService.closeCheck();
 
             Assert.Equal(check.getTotalPoints(), 31);
         }
 
         [Fact]
-        void useOffer__DefaultExpiration() {
-            CheckoutService checkoutService = new CheckoutService();
+        void usefactorByCategoryOffer__BeforeAddingLastProduct()
+        {
             checkoutService.openCheck();
 
-            checkoutService.addProduct(new Product(7, "Milk", Category.MILK));
-            FactorByCategoryOffer offer = new FactorByCategoryOffer(Category.MILK, 2);
-            checkoutService.useOffer(offer);      
-            Check check = checkoutService.closeCheck();
+            checkoutService.addProduct(Milk_7);
+            checkoutService.addProduct(Bred_3);
             
+            checkoutService.useOffer(factorByMilkOffer);
+            checkoutService.addProduct(Milk_7);
+           
+            Check check = checkoutService.closeCheck();
+
+            Assert.Equal(check.getTotalPoints(), 31);
+        }
+
+        [Fact]
+        void useOffer__DefaultExpiration()
+        {
+            checkoutService.openCheck();
+
+            checkoutService.addProduct(Milk_7);
+            checkoutService.useOffer(factorByMilkOffer);
+            Check check = checkoutService.closeCheck();
+
             Assert.Equal(14, check.getTotalPoints());
         }
 
         [Fact]
-        void useOffer__changeExpiration() {
-            CheckoutService checkoutService = new CheckoutService();
+        void useOffer__changeExpiration()
+        {
             checkoutService.openCheck();
 
-            FactorByCategoryOffer offer = new FactorByCategoryOffer(Category.MILK, 2);
-            checkoutService.addProduct(new Product(7, "Milk", Category.MILK));      
-            offer.setExpiration(DateTime.Now.AddYears(-1));
-            checkoutService.useOffer(offer);
+            checkoutService.addProduct(Milk_7);
+            factorByMilkOffer.setExpiration(DateTime.Now.AddYears(-1));
+            checkoutService.useOffer(factorByMilkOffer);
             Check check = checkoutService.closeCheck();
-            
-            Assert.Equal(7, check.getTotalPoints());      
+
+            Assert.Equal(7, check.getTotalPoints());
+        }
+
+        [Fact]
+        void useOffer_BrandOffer() {
+            checkoutService.openCheck();
+            checkoutService.addProduct(Milk_7);
+            checkoutService.addProduct(Milk_7);
+            checkoutService.addProduct(Bred_3);
+
+            checkoutService.useOffer(brandOffer);
+            Check check = checkoutService.closeCheck();
+
+            Assert.Equal(31, check.getTotalPoints());
+        }
+
+        [Fact]
+        void useOffer_ProductOffer() {
+            checkoutService.openCheck();
+            checkoutService.addProduct(Milk_7);
+            checkoutService.addProduct(Milk_7);
+            checkoutService.addProduct(Bred_3);
+
+            checkoutService.useOffer(new ProductOffer(Milk_7));
+            Check check = checkoutService.closeCheck();
+
+            Assert.Equal(31, check.getTotalPoints());
         }
     }
 }
