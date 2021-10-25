@@ -14,6 +14,7 @@ namespace Tic_tac_toe
         string cross;
         string[,] grid;
         bool status;
+        bool player;
         int progress;
 
         public string[,] getGrid()
@@ -25,6 +26,14 @@ namespace Tic_tac_toe
             return status;
         }
 
+        public bool getPlayer() {
+            return player;
+        }
+
+        public int getSize() {
+            return size;
+        }
+
         public Game(int size, string emptyCell, string zero, string cross)
         {
             this.size = size;
@@ -32,6 +41,7 @@ namespace Tic_tac_toe
             this.zero = zero;
             this.cross = cross;
             status = false;
+            player = true;
             progress = 0;
             generateGrid();
         }
@@ -46,6 +56,20 @@ namespace Tic_tac_toe
                     grid[i, j] = emptyCell;
                 }
             }
+        }
+
+        private static string getStringOfGrid(string[,] grid, int size)
+        {
+            string output = "";
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    output += grid[i, j] + " ";
+                }
+                output += "\n";
+            }
+            return output;
         }
 
         private string checkStatus()
@@ -162,6 +186,7 @@ namespace Tic_tac_toe
                     grid[rowIndex, columnIndex] = zero;
                     progress++;
                     status = "Zero was set in [" + rowIndex + ", " + columnIndex + "] cell.";
+                    player = !player;
                 }
             }
             else
@@ -171,10 +196,35 @@ namespace Tic_tac_toe
                     grid[rowIndex, columnIndex] = cross;
                     progress++;
                     status = "Cross was set in [" + rowIndex + ", " + columnIndex + "] cell.";
+                    player = !player;
                 }      
             }
+            
             status = status + "\n" + checkStatus();
             return status;        
+        }
+
+        public static string PlayGame(string input, Game game)
+        {
+            string output = "";
+            string[] data = input.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+            Console.WriteLine(data[0] + " " + data[1]);
+            if (!game.getStatus())
+            {
+                try
+                {
+                    output = (game.makeMove(int.Parse(data[0]), int.Parse(data[1])));
+                    output += "\n" + getStringOfGrid(game.getGrid(), game.getSize());
+                }
+                catch
+                {
+                    output = $"Input error! The input data: {data[0]}, {data[1]} are can not be used.";
+                }
+            }
+            else {
+                output = $"Game is over. The result of the game is {game.makeMove(0, 0)}";
+            }
+            return output;
         }
     }
 }
