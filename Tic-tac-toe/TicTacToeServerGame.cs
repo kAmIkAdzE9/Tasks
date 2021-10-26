@@ -6,21 +6,34 @@ using System.Text;
 
 namespace Tic_tac_toe
 {
-    public class ServerConnection
+    public class TicTacToeServerGame
     {
-        private static TcpClient GetTcpClient(TcpListener server)
+        private static string MakeMove(string input, Game game)
         {
-            return server.AcceptTcpClient();
+            string output = "";
+            string[] data = input.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+            int x = 0;
+            int y = 0;
+            try {
+                x = int.Parse(data[0]);
+                y = int.Parse(data[1]);
+            }
+            catch {
+                output = "Input error!";
+                return output;
+            }
+            if (!game.getStatus())
+            {
+                output = game.makeMove(x, y);
+                output += "\n" + game.getStringOfGrid(game.getGrid(), game.getSize());
+            }
+            return output;
         }
-        public static void ConnectToServer(string[] args)
+
+        public static void PlayGame(string[] args)
         {
             TcpListener server = null;
-            string emptyCell = "-";
-            string zero = "0";
-            string cross = "x";
-            int size = 3;
-            bool flag = true;
-            Game game = new Game(size, emptyCell, zero, cross);
+            Game game = new Game();
             try
             {
                 IPAddress localAddr = IPAddress.Parse(args[0]);
@@ -35,12 +48,13 @@ namespace Tic_tac_toe
                 {
                     Console.Write("Waiting for a connection... ");
 
-                    TcpClient client1 = GetTcpClient(server);
+                    TcpClient client1 = server.AcceptTcpClient();
                     NetworkStream stream1 = client1.GetStream();
                     StreamReader reader1 = new StreamReader(stream1);
                     StreamWriter writer1 = new StreamWriter(stream1);
                     Console.WriteLine("Connected");
-                    TcpClient client2 = GetTcpClient(server);
+
+                    TcpClient client2 = server.AcceptTcpClient();
                     NetworkStream stream2 = client2.GetStream();
                     StreamReader reader2 = new StreamReader(stream2);
                     StreamWriter writer2 = new StreamWriter(stream2);
@@ -49,28 +63,42 @@ namespace Tic_tac_toe
                     StreamReader reader = reader1;
 
                     data = null;
-                    Console.WriteLine(reader1.Equals(reader2));
                     while (true)
                     {
-                        data = reader.ReadLine();
-                        if (!flag)
+                        if(game.getStatus()) {
+
+                            server.Stop();
+                            client1.Close();
+                            client2.Close();
+                            reader.Close();
+                            reader1.Close();
+                            reader2.Close();
+                            writer1.Close();
+                            writer2.Close();
+                            return;
+                        }
+                  
+                        if (game.getActivePlayer())
                         {
                             reader = reader1;
+                            
                         }
                         else
                         {
                             reader = reader2;
                         }
-                        flag = !flag;
-                        Console.WriteLine("Received: {0}", data);
-                        string response = Game.PlayGame(data, game);
+                        Console.WriteLine(game.getActivePlayer());
+
+                        data = reader.ReadLine();
+                        Console.WriteLine("Received: ", data);
+                        string response = MakeMove(data, game);
+                        Console.WriteLine(response);
+
                         writer1.WriteLine(response);
                         writer1.Flush();
-                        Console.WriteLine("Sent: {0}", response);
-
+                        
                         writer2.WriteLine(response);
                         writer2.Flush();
-                        Console.WriteLine("Sent: {0}", response);
                     }
                 }
             }

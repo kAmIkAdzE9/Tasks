@@ -8,43 +8,61 @@ namespace Tic_tac_toe
 {
     class Game
     {
-        int size;
-        string emptyCell;
-        string zero;
-        string cross;
+        int size = 3;
+        string emptyCell = "-";
+        string zero = "0";
+        string cross = "x";
         string[,] grid;
-        bool status;
-        bool player;
-        int progress;
+        bool status = false;
+        bool activePlayer = true;
+        int progress = 0;
 
         public string[,] getGrid()
         {
             return grid;
         }
 
-        public bool getStatus() {
+        public bool getStatus()
+        {
             return status;
         }
 
-        public bool getPlayer() {
-            return player;
+        public bool getActivePlayer()
+        {
+            return activePlayer;
         }
 
-        public int getSize() {
+        public int getSize()
+        {
             return size;
         }
 
-        public Game(int size, string emptyCell, string zero, string cross)
+        public Game()
         {
-            this.size = size;
-            this.emptyCell = emptyCell;
-            this.zero = zero;
-            this.cross = cross;
-            status = false;
-            player = true;
-            progress = 0;
             generateGrid();
         }
+
+        public Game(int size)
+        {
+            if (size > 3)
+            {
+                this.size = size;
+            }
+            generateGrid();
+        }
+        public Game(int size, string emptyCell, string zero, string cross)
+        {
+            if (size > 3)
+            {
+                this.size = size;
+            }
+
+            this.emptyCell = emptyCell;
+            this.zero = zero;
+            this.cross = cross; ;
+            generateGrid();
+        }
+
 
         private void generateGrid()
         {
@@ -58,7 +76,7 @@ namespace Tic_tac_toe
             }
         }
 
-        private static string getStringOfGrid(string[,] grid, int size)
+        public string getStringOfGrid(string[,] grid, int size)
         {
             string output = "";
             for (int i = 0; i < size; i++)
@@ -84,50 +102,60 @@ namespace Tic_tac_toe
             int counter_7 = 0;
             int counter_8 = 0;
 
-            for(int i = 0; i < size; i++)
+            for (int i = 0; i < size; i++)
             {
-                for(int j = 0; j < size; j++)
+                for (int j = 0; j < size; j++)
                 {
-                    if(grid[i, j] == cross) {
+                    if (grid[i, j] == cross)
+                    {
                         counter_1++;
                     }
 
-                    if(grid[i, j] == zero) {
+                    if (grid[i, j] == zero)
+                    {
                         counter_2++;
                     }
-                
-                    if(grid[j, i] == cross) {
+
+                    if (grid[j, i] == cross)
+                    {
                         counter_3++;
                     }
 
-                    if(grid[j, i] == zero) {
+                    if (grid[j, i] == zero)
+                    {
                         counter_4++;
                     }
                 }
 
-                if(grid[i, i] == cross) {
+                if (grid[i, i] == cross)
+                {
                     counter_5++;
                 }
 
-                if(grid[i, i] == zero) {
+                if (grid[i, i] == zero)
+                {
                     counter_6++;
                 }
 
-                if(grid[i, size - i - 1] == cross) {
+                if (grid[i, size - i - 1] == cross)
+                {
                     counter_7++;
                 }
 
-                if(grid[i, size - i - 1] == zero) {
+                if (grid[i, size - i - 1] == zero)
+                {
                     counter_8++;
                 }
 
-                if(counter_1 == size || counter_3 == size) {
+                if (counter_1 == size || counter_3 == size)
+                {
                     st = "Cross Win!";
                     status = true;
                     return st;
                 }
 
-                if (counter_2 == size || counter_4 == size) {
+                if (counter_2 == size || counter_4 == size)
+                {
                     st = "Zero Win!";
                     status = true;
                     return st;
@@ -139,19 +167,21 @@ namespace Tic_tac_toe
                 counter_4 = 0;
             }
 
-            if(counter_5 == size || counter_7 == size) {
+            if (counter_5 == size || counter_7 == size)
+            {
                 st = "Cross Win!";
                 status = true;
                 return st;
             }
 
-            if(counter_6 == size || counter_8 == size) {
+            if (counter_6 == size || counter_8 == size)
+            {
                 st = "Zero Win!";
                 status = true;
                 return st;
             }
 
-            if(progress == size * size)
+            if (progress == size * size)
             {
                 st = "This is draw!";
                 status = true;
@@ -163,67 +193,47 @@ namespace Tic_tac_toe
 
         public string makeMove(int rowIndex, int columnIndex)
         {
-            string status = "in progress";
-            if(checkStatus() != "") {
-                status = checkStatus();
-                return status;
+            string output = "";
+            if (checkStatus() != "")
+            {
+                output = checkStatus();
+                return output;
             }
 
             if (rowIndex > size || columnIndex > size)
             {
-                status = "Some index is out of bounds.";
-                return status;
+                output = "Some index is out of bounds.";
+                return output;
             }
 
-            if(grid[rowIndex, columnIndex] != emptyCell) {
-                status = "The cell [" + rowIndex + ", " + columnIndex + "] is used. It is " + grid[rowIndex, columnIndex];
+            if (grid[rowIndex, columnIndex] != emptyCell)
+            {
+                output = "The cell [" + rowIndex + ", " + columnIndex + "] is used. It is " + grid[rowIndex, columnIndex];
+                return output;
             }
 
-            if(progress % 2 != 0)
+            if (progress % 2 != 0)
             {
                 if (grid[rowIndex, columnIndex] == emptyCell)
                 {
                     grid[rowIndex, columnIndex] = zero;
                     progress++;
-                    status = "Zero was set in [" + rowIndex + ", " + columnIndex + "] cell.";
-                    player = !player;
+                    output = "Zero was set in [" + rowIndex + ", " + columnIndex + "] cell.";
+                    activePlayer = !activePlayer;
                 }
             }
             else
             {
-                if(grid[rowIndex, columnIndex] == emptyCell)
+                if (grid[rowIndex, columnIndex] == emptyCell)
                 {
                     grid[rowIndex, columnIndex] = cross;
                     progress++;
-                    status = "Cross was set in [" + rowIndex + ", " + columnIndex + "] cell.";
-                    player = !player;
-                }      
+                    output = "Cross was set in [" + rowIndex + ", " + columnIndex + "] cell.";
+                    activePlayer = !activePlayer;
+                }
             }
-            
-            status = status + "\n" + checkStatus();
-            return status;        
-        }
 
-        public static string PlayGame(string input, Game game)
-        {
-            string output = "";
-            string[] data = input.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-            Console.WriteLine(data[0] + " " + data[1]);
-            if (!game.getStatus())
-            {
-                try
-                {
-                    output = (game.makeMove(int.Parse(data[0]), int.Parse(data[1])));
-                    output += "\n" + getStringOfGrid(game.getGrid(), game.getSize());
-                }
-                catch
-                {
-                    output = $"Input error! The input data: {data[0]}, {data[1]} are can not be used.";
-                }
-            }
-            else {
-                output = $"Game is over. The result of the game is {game.makeMove(0, 0)}";
-            }
+            output = output + "\n" + checkStatus();
             return output;
         }
     }

@@ -49,7 +49,7 @@ namespace Tic_tac_toe
 
 
             String[] input = { "127.0.0.1", "12345" };
-            ServerConnection.ConnectToServer(input); 
+            TicTacToeServerGame.PlayGame(input); 
             Console.WriteLine();
         }
     }
