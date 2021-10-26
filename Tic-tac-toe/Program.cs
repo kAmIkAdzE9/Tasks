@@ -48,7 +48,7 @@ namespace Tic_tac_toe
             //PlayGameWithScenario(size, emptyCell, zero, cross, scenario_3);
 
 
-            String[] input = { "127.0.0.1", "12345" };
+            String[] input = { "10.177.1.10", "12345" };
             TicTacToeServerGame.PlayGame(input); 
             Console.WriteLine();
         }

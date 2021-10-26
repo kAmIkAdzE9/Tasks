@@ -22,7 +22,7 @@ namespace Tic_tac_toe
                 output = "Input error!";
                 return output;
             }
-            if (!game.getStatus())
+            if (!game.IsGameEnd())
             {
                 output = game.makeMove(x, y);
                 output += "\n" + game.getStringOfGrid(game.getGrid(), game.getSize());
@@ -65,7 +65,7 @@ namespace Tic_tac_toe
                     data = null;
                     while (true)
                     {
-                        if(game.getStatus()) {
+                        if(game.IsGameEnd()) {
 
                             server.Stop();
                             client1.Close();
@@ -78,16 +78,8 @@ namespace Tic_tac_toe
                             return;
                         }
                   
-                        if (game.getActivePlayer())
-                        {
-                            reader = reader1;
-                            
-                        }
-                        else
-                        {
-                            reader = reader2;
-                        }
-                        Console.WriteLine(game.getActivePlayer());
+                        reader = game.IsFirstPlayer() ? reader1 : reader2;
+                        Console.WriteLine(game.IsFirstPlayer());
 
                         data = reader.ReadLine();
                         Console.WriteLine("Received: ", data);

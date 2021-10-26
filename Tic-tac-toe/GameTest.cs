@@ -60,7 +60,7 @@ namespace Tic_tac_toe
             }
 
             // Assert
-            Assert.Equal(status, game.getStatus());
+            Assert.Equal(status, game.IsGameEnd());
         }
     }
 }

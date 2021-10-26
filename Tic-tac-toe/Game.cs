@@ -22,12 +22,12 @@ namespace Tic_tac_toe
             return grid;
         }
 
-        public bool getStatus()
+        public bool IsGameEnd()
         {
             return status;
         }
 
-        public bool getActivePlayer()
+        public bool IsFirstPlayer()
         {
             return activePlayer;
         }
