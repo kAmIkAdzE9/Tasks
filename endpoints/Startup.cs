@@ -61,7 +61,7 @@ namespace endpoints
                     }
                     else
                     {
-                        await context.Response.WriteAsync($"The length is {forms.Length}");
+                        await context.Response.WriteAsync($"Input error. The length is {forms.Length}");
                     }
                 });
 
