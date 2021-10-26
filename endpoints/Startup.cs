@@ -30,9 +30,35 @@ namespace endpoints
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapPost("/headers", async context => 
+                {
+                    
+                });
+
                 endpoints.MapGet("/", async context =>
                 {
                     await context.Response.WriteAsync("Hello World!");
+                });
+
+                endpoints.MapGet("/headers", async context =>
+                {
+                    string res = "";
+                    IHeaderDictionary headers = context.Request.Headers;
+                    foreach(KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues> keyValue in headers) {
+                        res += keyValue.Key + " " + keyValue.Value.ToString() + "\n";
+                    }
+                    
+                    await context.Response.WriteAsync(res);
+                });
+
+                endpoints.MapGet("/plural", async context =>
+                {
+                    await context.Response.WriteAsync("plural");
+                });
+
+                endpoints.MapGet("/frequency", async context =>
+                {
+                    await context.Response.WriteAsync("frequency");
                 });
             });
         }
