@@ -30,11 +30,6 @@ namespace endpoints
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapPost("/headers", async context => 
-                {
-                    
-                });
-
                 endpoints.MapGet("/", async context =>
                 {
                     await context.Response.WriteAsync("Hello World!");
@@ -44,16 +39,21 @@ namespace endpoints
                 {
                     string res = "";
                     IHeaderDictionary headers = context.Request.Headers;
-                    foreach(KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues> keyValue in headers) {
+                    foreach (KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues> keyValue in headers)
+                    {
                         res += keyValue.Key + " " + keyValue.Value.ToString() + "\n";
                     }
-                    
+
                     await context.Response.WriteAsync(res);
                 });
 
                 endpoints.MapGet("/plural", async context =>
                 {
-                    await context.Response.WriteAsync("plural");
+                    int number = Convert.ToInt32(context.Request.Query["number"]);
+                    string[] forms = context.Request.Query["forms"].ToString().Split(",", StringSplitOptions.RemoveEmptyEntries);
+                    //http://localhost:5000/plural?number=37&forms=rik,roku,rokiv
+                    string response = Pluralization.GetPluralization(number, forms[0], forms[1], forms[2]);
+                    await context.Response.WriteAsync($"Pluralization of {number} (using forms: {forms[0]}, {forms[1]}, {forms[2]})  is {number} {response}");
                 });
 
                 endpoints.MapGet("/frequency", async context =>
