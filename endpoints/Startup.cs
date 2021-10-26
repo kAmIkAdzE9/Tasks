@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.IO;
+using System.Threading.Tasks;
+using System.Text;
+using System.Buffers;
+using System.Text.Json;
 
 namespace endpoints
 {
@@ -51,14 +54,34 @@ namespace endpoints
                 {
                     int number = Convert.ToInt32(context.Request.Query["number"]);
                     string[] forms = context.Request.Query["forms"].ToString().Split(",", StringSplitOptions.RemoveEmptyEntries);
-                    //http://localhost:5000/plural?number=37&forms=rik,roku,rokiv
-                    string response = Pluralization.GetPluralization(number, forms[0], forms[1], forms[2]);
-                    await context.Response.WriteAsync($"Pluralization of {number} (using forms: {forms[0]}, {forms[1]}, {forms[2]})  is {number} {response}");
+                    if (forms.Length > 2)
+                    {
+                        string response = Pluralization.GetPluralization(number, forms[0], forms[1], forms[2]);
+                        await context.Response.WriteAsync($"Pluralization of {number} (using forms: {forms[0]}, {forms[1]}, {forms[2]})  is {number} {response}");
+                    }
+                    else
+                    {
+                        await context.Response.WriteAsync($"The length is {forms.Length}");
+                    }
                 });
 
-                endpoints.MapGet("/frequency", async context =>
+                endpoints.MapPost("/frequency", async context =>
                 {
-                    await context.Response.WriteAsync("frequency");
+                    string bodyString = await new StreamReader(context.Request.Body).ReadToEndAsync();
+                    Dictionary<string, int> dict = Frequency.GetCountOfWord(bodyString);
+                    int maxVal = 0;
+                    string mostPopularWord = "";
+                    foreach(var el in dict) {
+                        if(el.Value > maxVal) {
+                            maxVal = el.Value;
+                            mostPopularWord = el.Key;
+                        }
+                    }
+                    context.Response.ContentType = "application/json";
+                    context.Response.Headers.Add("Words-Count", dict.Count.ToString());
+                    context.Response.Headers.Add("MostPopularWord", mostPopularWord);
+
+                    await context.Response.WriteAsync(JsonSerializer.Serialize<Dictionary<string, int>>(dict));
                 });
             });
         }
