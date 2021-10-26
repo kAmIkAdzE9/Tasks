@@ -43,8 +43,9 @@ namespace todo_rest_api
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "todo_rest_api v1"));
             }
-
-            app.UseHttpsRedirection();
+            else {
+                app.UseHttpsRedirection();
+            }
 
             app.UseRouting();
 
