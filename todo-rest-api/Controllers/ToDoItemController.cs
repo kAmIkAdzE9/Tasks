@@ -5,14 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace todo_rest_api
-{   
+{
     [Route("api/[controller]")]
     [ApiController]
     public class ToDoItemController : ControllerBase
     {
         private ToDoItemService toDoItemService;
 
-        public ToDoItemController (ToDoItemService service) {
+        public ToDoItemController(ToDoItemService service)
+        {
             this.toDoItemService = service;
         }
 
@@ -29,14 +30,35 @@ namespace todo_rest_api
             return Created($"api/todoitem/{createdItem.Id}", createdItem);
         }
 
-        [HttpPatch("{itemID}")]
-        public ActionResult<ToDoItem> ChangeDone(int itemID)
+        [HttpPut("{itemID}")]
+        public ActionResult<ToDoItem> ChangeFullItem(int itemID, ToDoItem toDoItem)
         {
-            ToDoItem createdItem = toDoItemService.ChangeDone(itemID);
+            ToDoItem createdItem = toDoItemService.ChangeFullItem(itemID, toDoItem);
             return Created($"api/todoitem/{createdItem.Id}", createdItem);
         }
 
-        [HttpPatch("{itemID}/{done}")]
+        [HttpPatch("title/{itemID}/{title}")]
+        public ActionResult<ToDoItem> ChangeTitle(int itemID, string title)
+        {
+            ToDoItem createdItem = toDoItemService.ChangeTitle(itemID, title);
+            return Created($"api/todoitem/{createdItem.Id}", createdItem);
+        }
+
+        [HttpPatch("description/{itemID}/{description}")]
+        public ActionResult<ToDoItem> ChangeDescription(int itemID, string description)
+        {
+            ToDoItem createdItem = toDoItemService.ChangeDescription(itemID, description);
+            return Created($"api/todoitem/{createdItem.Id}", createdItem);
+        }
+
+        [HttpPatch("date/{itemID}/{date}")]
+        public ActionResult<ToDoItem> ChangeDate(int itemID, DateTime date)
+        {
+            ToDoItem createdItem = toDoItemService.ChangeDate(itemID, date);
+            return Created($"api/todoitem/{createdItem.Id}", createdItem);
+        }
+
+        [HttpPatch("done/{itemID}/{done}")]
         public ActionResult<ToDoItem> ChangeDone(int itemID, bool done)
         {
             ToDoItem createdItem = toDoItemService.ChangeDone(itemID, done);
@@ -44,7 +66,8 @@ namespace todo_rest_api
         }
 
         [HttpDelete("{itemID}")]
-        public void DeleteItem(int itemID) {
+        public void DeleteItem(int itemID)
+        {
             toDoItemService.Delete(itemID);
         }
     }
