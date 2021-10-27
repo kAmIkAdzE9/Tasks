@@ -29,14 +29,14 @@ namespace todo_rest_api
             return Created($"api/todoitem/{createdItem.Id}", createdItem);
         }
 
-        [HttpPut("{itemID}")]
+        [HttpPatch("{itemID}")]
         public ActionResult<ToDoItem> ChangeDone(int itemID)
         {
             ToDoItem createdItem = toDoItemService.ChangeDone(itemID);
             return Created($"api/todoitem/{createdItem.Id}", createdItem);
         }
 
-        [HttpPut("{itemID}/{done}")]
+        [HttpPatch("{itemID}/{done}")]
         public ActionResult<ToDoItem> ChangeDone(int itemID, bool done)
         {
             ToDoItem createdItem = toDoItemService.ChangeDone(itemID, done);
