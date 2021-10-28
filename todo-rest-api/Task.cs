@@ -2,7 +2,7 @@ using System;
 
 namespace todo_rest_api
 {
-    public class ToDoItem
+    public class Task
     {
         public int Id { get; set; }
         public string Title { get; set; }
