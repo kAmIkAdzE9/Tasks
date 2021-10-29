@@ -47,7 +47,7 @@ namespace todo_rest_api
             dictionary.Add(++lastId, taskList);
         }
 
-        public bool CreateTaskInList(int listId, Task task)
+        public Task CreateTaskInList(int listId, Task task)
         {
             if (dictionary.ContainsKey(listId))
             {
@@ -61,9 +61,9 @@ namespace todo_rest_api
                     task.Id = 1;
                 }
                 dictionary[listId].Tasks.Add(task);
-                return true;
+                return task;
             }
-            return false;
+            return null;
         }
 
         public bool DeleteList(int listId)
@@ -92,7 +92,7 @@ namespace todo_rest_api
             return false;
         }
 
-        public bool ReplaceItem(int listId, int taskId, Task task)
+        public Task ReplaceItem(int listId, int taskId, Task task)
         {
             task.Id = taskId;
             if (dictionary.ContainsKey(listId))
@@ -105,14 +105,14 @@ namespace todo_rest_api
                         item.Description = task.Description;
                         item.DueDate = task.DueDate;
                         item.Done = task.Done;
-                        return true;
+                        return item;
                     }
                 }         
             }
-            return false;
+            return null;
         }
 
-        public bool PartialUpdate(int listId, int taskId, Task task)
+        public Task PartialUpdate(int listId, int taskId, Task task)
         {
             task.Id = taskId;
             if (dictionary.ContainsKey(listId))
@@ -137,11 +137,11 @@ namespace todo_rest_api
                         {
                             item.Done = task.Done;
                         }
-                        return true;;
+                        return item;;
                     }
                 }
             }
-            return false;
+            return null;
         }
     }
 }

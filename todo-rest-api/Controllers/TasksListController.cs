@@ -6,13 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace todo_rest_api
 {
-    [Route("/taskList")]
+    [Route("/lists/{listId}")]
     [ApiController]
-    public class TasksListByParametersController : ControllerBase
+    public class TasksListController : ControllerBase
     {
         TasksListService toDoItemService;
 
-        public TasksListByParametersController(TasksListService toDoItemService)
+        public TasksListController(TasksListService toDoItemService)
         {
             this.toDoItemService = toDoItemService;
         }  

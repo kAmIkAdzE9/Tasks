@@ -6,33 +6,39 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace todo_rest_api
 {
-    [Route("/taskList")]
+    [Route("/tasks")]
     [ApiController]
-    public class TasksListByParametersController : ControllerBase
+    public class TasksByParametersController : ControllerBase
     {
         TasksListService toDoItemService;
 
-        public TasksListByParametersController(TasksListService toDoItemService)
+        public TasksByParametersController(TasksListService toDoItemService)
         {
             this.toDoItemService = toDoItemService;
         }  
 
         [HttpGet]
-        public ActionResult<List<Task>> GetList(int listId)
+        public ActionResult<Task> GetItemFromList(int listId, int taskId)        
         {
-            return GetActionResult(toDoItemService.GetList(listId));
+            return GetActionResult(toDoItemService.GetItemFromList(listId, taskId));
         }
 
-        [HttpPost]
-        public ActionResult<Task> CreateTaskInList(int listId, Task task)
+        [HttpPut]
+        public ActionResult<Task> ReplaceItem(int listId, int taskId, Task task)
         {
-            return GetActionResult(toDoItemService.CreateTaskInList(listId, task));
+            return GetActionResult(toDoItemService.ReplaceItem(listId, taskId, task));
         }
-    
+
+        [HttpPatch]
+        public ActionResult<Task> PartialUpdate(int listId, int taskId, Task task)
+        {
+            return GetActionResult(toDoItemService.PartialUpdate(listId, taskId, task));
+        }
+        
         [HttpDelete]
-        public ActionResult DeleteItem(int listId)
-        { 
-            return GetActionResult(toDoItemService.DeleteList(listId));
+        public ActionResult DeleteItemFromList(int listId, int taskId)
+        {
+            return GetActionResult(toDoItemService.DeleteItemFromList(listId, taskId));
         }
 
         private ActionResult GetActionResult(bool status) 
