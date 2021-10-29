@@ -8,30 +8,29 @@ namespace OOP_Workshop
     {
         private List<Product> products;
         private int points;
+        private int totalCost;
 
         public Check()
         {
             products = new List<Product>();
             points = 0;
+            totalCost = 0;
         }
 
-        public List<Product> getProducts() {
+        public List<Product> getProducts()
+        {
             return products;
         }
 
         public int getTotalCost()
         {
-            int totalCost = 0;
-            foreach (Product product in this.products)
-            {
-                totalCost += product.GetPrice();
-            }
             return totalCost;
         }
 
         internal void addProduct(Product product)
         {
             products.Add(product);
+            addCost(product.GetPrice());
         }
 
         public int getTotalPoints()
@@ -42,6 +41,11 @@ namespace OOP_Workshop
         internal void addPoints(int points)
         {
             this.points += points;
+        }
+
+        internal void addCost(int value)
+        {
+            totalCost += value;
         }
 
         public int getCostByCategory(Category category)
@@ -57,11 +61,13 @@ namespace OOP_Workshop
             return output;
         }
 
-        public int getCount() {
+        public int getCount()
+        {
             return products.Count;
         }
 
-        public int getCostByProduct(Product product) {
+        public int getCostByProduct(Product product)
+        {
             int cost = 0;
             foreach (Product p in products)
             {
@@ -73,7 +79,8 @@ namespace OOP_Workshop
             return cost;
         }
 
-        public int getCostByBrand(string brand) {
+        public int getCostByBrand(string brand)
+        {
             int cost = 0;
             foreach (Product p in products)
             {

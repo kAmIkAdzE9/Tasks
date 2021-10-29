@@ -12,7 +12,7 @@ namespace OOP_Workshop
             return points;
         }
 
-        protected override bool checkCondition(Check check)
+        protected override bool checkBonusCondition(Check check)
         {
             return check.getCostByBrand(brand) != 0;
         }

@@ -7,21 +7,25 @@ namespace OOP_Workshop
     {
         CheckoutService checkoutService;
         Product Milk_7;
+        Product Milk_8;
         Product Bred_3;
         AnyGoodsOffer anyGoodsOffer;
         FactorByCategoryOffer factorByMilkOffer;
         FactorByCategoryOffer factorByBredOffer;
         BrandOffer brandOffer;
+        DiscountOffer discountOffer;
 
         public CheckoutServiceTest()
         {
             checkoutService = new CheckoutService();
             Milk_7 = new Product(7, "Milk", "Волошкове поле", Category.MILK);
+            Milk_8 = new Product(8, "Milk", "Волошкове поле", Category.MILK);
             Bred_3 = new Product(3, "Bred", Category.Bred);
             anyGoodsOffer = new AnyGoodsOffer(6, 2);
             factorByMilkOffer = new FactorByCategoryOffer(Category.MILK, 2);
             factorByBredOffer = new FactorByCategoryOffer(Category.Bred, 3);
             brandOffer = new BrandOffer("Волошкове поле");
+            discountOffer = new DiscountOffer(Milk_8, 0.5);
         }
 
         [Fact]
@@ -179,6 +183,19 @@ namespace OOP_Workshop
             Check check = checkoutService.closeCheck();
 
             Assert.Equal(31, check.getTotalPoints());
+        }
+
+        [Fact]
+        void useOffer_DiscountOffer() {
+            checkoutService.openCheck();
+            checkoutService.addProduct(Milk_8);
+            checkoutService.addProduct(Milk_8);
+            checkoutService.addProduct(Bred_3);
+
+            checkoutService.useOffer(discountOffer);
+            Check check = checkoutService.closeCheck();
+
+            Assert.Equal(11, check.getTotalCost());
         }
     }
 }

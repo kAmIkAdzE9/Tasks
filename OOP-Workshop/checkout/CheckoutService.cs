@@ -17,16 +17,7 @@ namespace OOP_Workshop
             check = new Check();
         }
 
-        internal void addProduct(Product product)
-        {
-            if (check == null)
-            {
-                openCheck();
-            }
-            check.addProduct(product);
-        }
-
-        public Check closeCheck()
+         public Check closeCheck()
         {
             Check closedCheck = check;
             foreach(Offer offer in offers) {
@@ -34,6 +25,15 @@ namespace OOP_Workshop
             }
             check = null;
             return closedCheck;
+        }
+
+        internal void addProduct(Product product)
+        {
+            if (check == null)
+            {
+                openCheck();
+            }
+            check.addProduct(product);
         }
 
         public void useOffer(Offer offer) {

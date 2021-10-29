@@ -26,7 +26,7 @@ namespace OOP_Workshop
             return (points * (factor - 1));
         }
 
-        protected override bool checkCondition(Check check)
+        protected override bool checkBonusCondition(Check check)
         {
             return check.getCostByCategory(category) != 0;
         }

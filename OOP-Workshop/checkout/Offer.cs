@@ -39,22 +39,47 @@ namespace OOP_Workshop
             this.expiration = expiration;
         }
 
-        public void apply(Check check) {
-            if(checkExpiration() && checkCondition(check)) {
-                addPoints(check, calculatePoints(check));
+        public void apply(Check check)
+        {
+            if (checkExpiration())
+            {
+                if (checkBonusCondition(check))
+                {
+                    addPoints(check, calculatePoints(check));
+                }
+                if (checkDiscountCondition(check))
+                {
+                    addCost(check, calculateCost(check));
+                }
             }
         }
 
-        protected void addPoints(Check check, int points)
+        private void addPoints(Check check, int points)
         {
             check.addPoints(points);
         }
-        
-        protected virtual int calculatePoints(Check check) {
+
+        private void addCost(Check check, int value)
+        {
+            check.addCost(value);
+        }
+
+        protected virtual int calculatePoints(Check check)
+        {
             return check.getTotalCost();
         }
 
-        protected virtual bool checkCondition(Check check)
+        protected virtual int calculateCost(Check check)
+        {
+            return 0;
+        }
+
+        protected virtual bool checkBonusCondition(Check check)
+        {
+            return true;
+        }
+
+        protected virtual bool checkDiscountCondition(Check check)
         {
             return true;
         }
