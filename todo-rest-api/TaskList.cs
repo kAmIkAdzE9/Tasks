@@ -6,18 +6,18 @@ namespace todo_rest_api
     {
         private const string defaultTitle = "TasksListName";
         public string Title { get; set; }
-        public List<Task> TasksList { get; set; }
+        public List<Task> Tasks { get; set; }
 
         public TaskList()
         {
             Title = defaultTitle;
-            TasksList = new List<Task>();
+            Tasks = new List<Task>();
         }
 
         public TaskList(string title)
         {
             Title = title;
-            TasksList = new List<Task>();
+            Tasks = new List<Task>();
         }
     }
 }

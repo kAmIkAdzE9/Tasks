@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace todo_rest_api
 {
-    [Route("/lists")]
+    [Route("/tasks")]
     [ApiController]
     public class TasksListByParametersController : ControllerBase
     {
@@ -18,51 +18,89 @@ namespace todo_rest_api
         }
 
         [HttpGet("listId")]
-        public ActionResult<TaskList> GetAllFromList(int listId)
+        public ActionResult<List<Task>> GetList(int listId)
         {
-            return toDoItemService.GetAllFromList(listId);
+            var list = toDoItemService.GetList(listId);
+            return GetActionResult(list);
         }
 
         [HttpGet("listId/taskId")]
         public ActionResult<Task> GetItemFromList(int listId, int taskId)
         {
-            return toDoItemService.GetItemFromList(listId, taskId);
+            var task = toDoItemService.GetItemFromList(listId, taskId);
+            return GetActionResult(task);
         }
 
         [HttpPost("title")]
-        public void CreateTodoItemInList(string title)
+        public ActionResult CreateTasksList(string title)
         {
             toDoItemService.CreateTasksList(title);
+            return GetActionResult(true);
         }
 
-        [HttpPost("listId/toDoItem")]
-        public void CreateTodoItemInList(int listId, Task task)
+        [HttpPost("listId/task")]
+        public ActionResult CreateTaskInList(int listId, Task task)
         {
-            toDoItemService.CreateTaskInList(listId, task);
+            var status = toDoItemService.CreateTaskInList(listId, task);
+            return GetActionResult(status);
         }
 
         [HttpPut("listId/taskId")]
-        public void ChangeFullItem(int listId, int taskId, Task task)
+        public ActionResult ReplaceItem(int listId, int taskId, Task task)
         {
-            toDoItemService.ReplaceItem(listId, taskId, task);
+            var status = toDoItemService.ReplaceItem(listId, taskId, task);
+            return GetActionResult(status);
         }
 
         [HttpPatch("listId/taskId")]
-        public void ChangeTitle(int listId, int taskId, Task task)
+        public ActionResult PartialUpdate(int listId, int taskId, Task task)
         {
-            toDoItemService.PartialUpdate(listId, taskId, task);
+            var status = toDoItemService.PartialUpdate(listId, taskId, task);
+            return GetActionResult(status);
         }
 
         [HttpDelete("listId")]
-        public void DeleteItem(int listId)
+        public ActionResult DeleteList(int listId)
         {
-            toDoItemService.DeleteList(listId);
+            var status = toDoItemService.DeleteList(listId);
+            return GetActionResult(status);
         }
 
         [HttpDelete("listId/taskId/delete")]
-        public void DeleteItem(int listId, int taskId)
+        public ActionResult DeleteItemFromList(int listId, int taskId)
         {
-            toDoItemService.DeleteItemFromList(listId, taskId);
+            var status = toDoItemService.DeleteItemFromList(listId, taskId);
+            return GetActionResult(status);
+        }
+
+        private ActionResult GetActionResult(bool status) 
+        {
+            if(status) {
+                return Ok();
+            }
+            else {
+                return NotFound();
+            }
+        }
+
+        private ActionResult<List<Task>> GetActionResult(List<Task> collection) 
+        {
+            if(collection != null) {
+                return collection;
+            }
+            else {
+                return NotFound();
+            }
+        }
+
+        private ActionResult<Task> GetActionResult(Task task) 
+        {
+            if(task != null) {
+                return task;
+            }
+            else {
+                return NotFound();
+            }
         }
     }
 }

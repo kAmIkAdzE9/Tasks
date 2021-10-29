@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace todo_rest_api
 {
@@ -8,35 +9,36 @@ namespace todo_rest_api
         private Dictionary<int, TaskList> dictionary = new Dictionary<int, TaskList>();
         int lastId = 0;
 
-        public Dictionary<int, TaskList> GetAll()
+        public List<TaskList> GetAll()
         {
-            return dictionary;
+            return dictionary.Values.ToList();
         }
-        public TaskList GetAllFromList(int listId)
+
+        
+        public List<Task> GetList(int listId)
         {
-            TaskList taskList = new TaskList();
+            List<Task> taskList = new List<Task>();
             if (dictionary.ContainsKey(listId))
             {
-                taskList = dictionary[listId];
+                taskList = dictionary[listId].Tasks;
+                return taskList;
             }
-            return taskList;
+            return null;
         }
 
         public Task GetItemFromList(int listId, int taskId)
         {
-            Task task = new Task();
             if (dictionary.ContainsKey(listId))
             {
-                foreach (Task item in dictionary[listId].TasksList)
+                foreach (Task item in dictionary[listId].Tasks)
                 {
                     if (item.Id == taskId)
                     {
-                        task = item;
-                        break;
+                        return item;
                     }
                 }
             }
-            return task;
+            return null;
         }
 
         public void CreateTasksList(string title)
@@ -45,54 +47,57 @@ namespace todo_rest_api
             dictionary.Add(++lastId, taskList);
         }
 
-        public void CreateTaskInList(int listId, Task task)
+        public bool CreateTaskInList(int listId, Task task)
         {
             if (dictionary.ContainsKey(listId))
             {
-                int count = dictionary[listId].TasksList.Count;
+                int count = dictionary[listId].Tasks.Count;
                 if (count > 0)
                 {
-                    task.Id = dictionary[listId].TasksList[count - 1].Id + 1;
+                    task.Id = dictionary[listId].Tasks[count - 1].Id + 1;
                 }
                 else
                 {
                     task.Id = 1;
                 }
-                dictionary[listId].TasksList.Add(task);
-
+                dictionary[listId].Tasks.Add(task);
+                return true;
             }
+            return false;
         }
 
-        public void DeleteList(int listId)
+        public bool DeleteList(int listId)
         {
             if (dictionary.ContainsKey(listId))
             {
                 dictionary.Remove(listId);
+                return true;
             }
-
+            return false;
         }
         
-        public void DeleteItemFromList(int listId, int taskId)
+        public bool DeleteItemFromList(int listId, int taskId)
         {
             if (dictionary.ContainsKey(listId))
             {
-                foreach (Task item in dictionary[listId].TasksList)
+                foreach (Task item in dictionary[listId].Tasks)
                 {
                     if (item.Id == taskId)
                     {
-                        dictionary[listId].TasksList.Remove(item);
-                        break;
+                        dictionary[listId].Tasks.Remove(item);
+                        return true;
                     }
-                }
+                }         
             }
+            return false;
         }
 
-        public void ReplaceItem(int listId, int taskId, Task task)
+        public bool ReplaceItem(int listId, int taskId, Task task)
         {
             task.Id = taskId;
             if (dictionary.ContainsKey(listId))
             {
-                foreach (Task item in dictionary[listId].TasksList)
+                foreach (Task item in dictionary[listId].Tasks)
                 {
                     if (item.Id == taskId)
                     {
@@ -100,18 +105,19 @@ namespace todo_rest_api
                         item.Description = task.Description;
                         item.DueDate = task.DueDate;
                         item.Done = task.Done;
-                        break;
+                        return true;
                     }
-                }
+                }         
             }
+            return false;
         }
 
-        public void PartialUpdate(int listId, int taskId, Task task)
+        public bool PartialUpdate(int listId, int taskId, Task task)
         {
             task.Id = taskId;
             if (dictionary.ContainsKey(listId))
             {
-                foreach (Task item in dictionary[listId].TasksList)
+                foreach (Task item in dictionary[listId].Tasks)
                 {
                     if (item.Id == taskId)
                     {
@@ -131,10 +137,11 @@ namespace todo_rest_api
                         {
                             item.Done = task.Done;
                         }
-                        break;
+                        return true;;
                     }
                 }
             }
+            return false;
         }
     }
 }
