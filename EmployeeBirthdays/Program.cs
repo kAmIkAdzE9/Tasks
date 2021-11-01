@@ -115,16 +115,10 @@ namespace EmployeeBirthdays
 
         static void Main(string[] args)
         {
-            List<Employee> employees = new List<Employee>();
-            employees.Add(new Employee("Igor", new DateTime(1999, 10, 17)));
-            employees.Add(new Employee("Viktor", new DateTime(1998, 10, 14)));
-            employees.Add(new Employee("Olga", new DateTime(2001, 11, 24)));
-            employees.Add(new Employee("Olena", new DateTime(1996, 12, 02)));
-            employees.Add(new Employee("Olexander", new DateTime(1991, 9, 04)));
-            employees.Add(new Employee("Oleg", new DateTime(1992, 11, 29)));
-            employees.Add(new Employee("Anton", new DateTime(1993, 10, 08)));
-            employees.Add(new Employee("Artur", new DateTime(1996, 02, 28)));
-            employees.Add(new Employee("Danilo", new DateTime(1998, 01, 16)));
+            var connString = "Host=127.0.0.1;Username=todolist_app;Password=todolist;Database=employee_birthdays";
+            string request = "Select name, birthday from employees";
+
+            List<Employee> employees = DBManager.Read(connString, request);
 
             //PrintEmployees(employees, 2); //Not using dictionary
             Console.WriteLine();
