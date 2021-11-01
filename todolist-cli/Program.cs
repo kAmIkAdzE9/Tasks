@@ -107,7 +107,7 @@ namespace todolist_cli
                         Console.WriteLine("Enter condition");
                         condition = Console.ReadLine();
 
-                        request = GetReadRequest(table, condition);
+                        request = GetDeleteRequest(table, condition);
                         Console.WriteLine(request);
                         requests.Add(request);
                         
