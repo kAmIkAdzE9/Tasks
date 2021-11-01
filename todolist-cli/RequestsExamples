@@ -1,0 +1,13 @@
+Create table items (title varchar, done bool, due_date date);
+
+Select * from items;
+
+Insert into items(title) values ('Update'), ('Delete');
+
+Update items set done=false;
+
+Update items set done = true where title='Update';
+
+Delete from items where title='Delete';
+
+update items set due_date='2021-11-01' where title='Update';
