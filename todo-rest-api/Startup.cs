@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Npgsql;
+using Microsoft.EntityFrameworkCore;
 
 namespace todo_rest_api
 {
@@ -32,7 +34,15 @@ namespace todo_rest_api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "todo_rest_api", Version = "v1" });
             });
-            services.AddSingleton<TasksListService>();
+            //services.AddSingleton<TasksListService>();
+
+            services.AddDbContext<ToDoListContext>(options =>
+                options
+                .UseNpgsql(Configuration.GetConnectionString("DefaultConnection"))
+                .UseSnakeCaseNamingConvention()
+            );
+
+            services.AddScoped<TasksListService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,7 +54,8 @@ namespace todo_rest_api
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "todo_rest_api v1"));
             }
-            else {
+            else
+            {
                 app.UseHttpsRedirection();
             }
 

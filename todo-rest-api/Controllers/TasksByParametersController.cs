@@ -18,27 +18,34 @@ namespace todo_rest_api
         }  
 
         [HttpGet]
-        public ActionResult<Task> GetItemFromList(int listId, int taskId)        
+        public ActionResult<Task> GetItemFromList(int taskId)        
         {
-            return GetActionResult(toDoItemService.GetItemFromList(listId, taskId));
+            return GetActionResult(toDoItemService.GetItemFromList(taskId));
+        }
+        
+        [HttpPost]
+        public ActionResult<Task> CreateTaskInList(Task task)
+        {
+            return GetActionResult(toDoItemService.CreateTaskInList(task));
         }
 
         [HttpPut]
-        public ActionResult<Task> ReplaceItem(int listId, int taskId, Task task)
+        public ActionResult<Task> ReplaceItem(int taskId, Task task)
         {
-            return GetActionResult(toDoItemService.ReplaceItem(listId, taskId, task));
+            return GetActionResult(toDoItemService.ReplaceItem(taskId, task));
         }
 
         [HttpPatch]
-        public ActionResult<Task> PartialUpdate(int listId, int taskId, Task task)
+        public ActionResult<Task> PartialUpdate(int taskId, Task task)
         {
-            return GetActionResult(toDoItemService.PartialUpdate(listId, taskId, task));
+            return GetActionResult(toDoItemService.PartialUpdate(taskId, task));
         }
         
         [HttpDelete]
-        public ActionResult DeleteItemFromList(int listId, int taskId)
+        public ActionResult DeleteItemFromList(int taskId)
         {
-            return GetActionResult(toDoItemService.DeleteItemFromList(listId, taskId));
+            toDoItemService.DeleteItemFromList(taskId);
+            return GetActionResult();
         }
     }
 }

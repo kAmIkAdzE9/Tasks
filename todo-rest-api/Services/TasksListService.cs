@@ -6,142 +6,129 @@ namespace todo_rest_api
 {
     public class TasksListService
     {
-        private Dictionary<int, TaskList> dictionary = new Dictionary<int, TaskList>();
-        int lastId = 0;
+        private ToDoListContext _context;
+
+        public TasksListService(ToDoListContext context)
+        {
+            this._context = context;
+        }
 
         public List<TaskList> GetAll()
         {
-            return dictionary.Values.ToList();
+            return _context.TaskLists.ToList();
         }
 
-        
-        public List<Task> GetList(int listId)
+        public Task GetItemFromList(int taskId)
         {
-            List<Task> taskList = new List<Task>();
-            if (dictionary.ContainsKey(listId))
+            foreach (Task task in _context.Tasks)
             {
-                taskList = dictionary[listId].Tasks;
-                return taskList;
-            }
-            return null;
-        }
-
-        public Task GetItemFromList(int listId, int taskId)
-        {
-            if (dictionary.ContainsKey(listId))
-            {
-                foreach (Task item in dictionary[listId].Tasks)
-                {
-                    if (item.Id == taskId)
-                    {
-                        return item;
-                    }
-                }
+                if (task.Id == taskId)
+                { return task; }
             }
             return null;
         }
 
         public void CreateTasksList(string title)
         {
-            TaskList taskList = new TaskList(title);
-            dictionary.Add(++lastId, taskList);
+            _context.TaskLists.Add(new TaskList(title));
+            _context.SaveChanges();
         }
 
-        public Task CreateTaskInList(int listId, Task task)
+        public Task CreateTaskInList(Task task)
         {
-            if (dictionary.ContainsKey(listId))
+            bool flag = false;
+            foreach (TaskList taskList in _context.TaskLists)
             {
-                int count = dictionary[listId].Tasks.Count;
-                if (count > 0)
+                if (taskList.Id == task.TaskListId)
                 {
-                    task.Id = dictionary[listId].Tasks[count - 1].Id + 1;
+                    flag = true;
                 }
-                else
-                {
-                    task.Id = 1;
-                }
-                dictionary[listId].Tasks.Add(task);
+            }
+
+            if (flag)
+            {
+                _context.Tasks.Add(task);
+                _context.SaveChanges();
                 return task;
             }
+
             return null;
         }
 
-        public bool DeleteList(int listId)
+        public void DeleteList(int listId)
         {
-            if (dictionary.ContainsKey(listId))
+            foreach (TaskList taskList in _context.TaskLists)
             {
-                dictionary.Remove(listId);
-                return true;
-            }
-            return false;
-        }
-        
-        public bool DeleteItemFromList(int listId, int taskId)
-        {
-            if (dictionary.ContainsKey(listId))
-            {
-                foreach (Task item in dictionary[listId].Tasks)
+                if (taskList.Id == listId)
                 {
-                    if (item.Id == taskId)
-                    {
-                        dictionary[listId].Tasks.Remove(item);
-                        return true;
-                    }
-                }         
-            }
-            return false;
-        }
-
-        public Task ReplaceItem(int listId, int taskId, Task task)
-        {
-            task.Id = taskId;
-            if (dictionary.ContainsKey(listId))
-            {
-                foreach (Task item in dictionary[listId].Tasks)
-                {
-                    if (item.Id == taskId)
-                    {
-                        item.Title = task.Title;
-                        item.Description = task.Description;
-                        item.DueDate = task.DueDate;
-                        item.Done = task.Done;
-                        return item;
-                    }
-                }         
-            }
-            return null;
-        }
-
-        public Task PartialUpdate(int listId, int taskId, Task task)
-        {
-            task.Id = taskId;
-            if (dictionary.ContainsKey(listId))
-            {
-                foreach (Task item in dictionary[listId].Tasks)
-                {
-                    if (item.Id == taskId)
-                    {
-                        if (task.Title != null || task.Title != "")
-                        {
-                            item.Title = task.Title;
-                        }
-                        if (task.Description != null || task.Description != "")
-                        {
-                            item.Description = task.Description;
-                        }
-                        if (task.DueDate != null)
-                        {
-                            item.DueDate = task.DueDate;
-                        }
-                        if (task.Done != item.Done)
-                        {
-                            item.Done = task.Done;
-                        }
-                        return item;;
-                    }
+                    _context.TaskLists.Remove(taskList);
+                    break;
                 }
             }
-            return null;
+            _context.SaveChanges();
+        }
+
+        public void DeleteItemFromList(int taskId)
+        {
+            foreach (Task task in _context.Tasks)
+            {
+                if (task.Id == taskId)
+                {
+                    _context.Tasks.Remove(task);
+                    break;
+                }
+            }
+            _context.SaveChanges();
+        }
+
+        public Task ReplaceItem(int taskId, Task task)
+        {
+            Task outputTask = null;
+            foreach (Task item in _context.Tasks)
+            {
+                if (item.Id == taskId)
+                {
+                    item.Title = task.Title;
+                    item.Description = task.Description;
+                    item.DueDate = task.DueDate;
+                    item.Done = task.Done;
+                    outputTask = item;
+                    break;
+                }
+            }
+            _context.SaveChanges();
+            return outputTask;
+        }
+
+        public Task PartialUpdate(int taskId, Task task)
+        {
+            Task outputTask = null;
+            foreach (Task item in _context.Tasks)
+            {
+                if (item.Id == taskId)
+                {
+                    if (task.Title != null || task.Title != "")
+                    {
+                        item.Title = task.Title;
+                    }
+                    if (task.Description != null || task.Description != "")
+                    {
+                        item.Description = task.Description;
+                    }
+                    if (task.DueDate != null)
+                    {
+                        item.DueDate = task.DueDate;
+                    }
+                    if (task.Done != item.Done)
+                    {
+                        item.Done = task.Done;
+                    }
+                    outputTask = item;
+                    break;
+                }
+            }
+            _context.SaveChanges();
+            return outputTask;
         }
     }
 }

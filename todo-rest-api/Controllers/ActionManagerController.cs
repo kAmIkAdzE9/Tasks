@@ -6,20 +6,15 @@ namespace todo_rest_api {
     [ApiController]
     public class ActionManagerController: ControllerBase 
     {
+        protected ActionResult GetActionResult()
+        {
+            return Ok();
+        }
+
         protected ActionResult<Task> GetActionResult(Task task) 
         {
             if(task != null) {
                 return task;
-            }
-            else {
-                return NotFound();
-            }
-        }
-
-        protected ActionResult GetActionResult(bool status) 
-        {
-            if(status) {
-                return Ok();
             }
             else {
                 return NotFound();
