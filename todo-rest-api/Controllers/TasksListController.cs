@@ -8,7 +8,7 @@ namespace todo_rest_api
 {
     [Route("/lists/{listId}")]
     [ApiController]
-    public class TasksListController : ControllerBase
+    public class TasksListController : ActionManagerController
     {
         TasksListService toDoItemService;
 
@@ -33,36 +33,6 @@ namespace todo_rest_api
         public ActionResult DeleteItem(int listId)
         { 
             return GetActionResult(toDoItemService.DeleteList(listId));
-        }
-
-        private ActionResult GetActionResult(bool status) 
-        {
-            if(status) {
-                return Ok();
-            }
-            else {
-                return NotFound();
-            }
-        }
-
-        private ActionResult<List<Task>> GetActionResult(List<Task> collection) 
-        {
-            if(collection != null) {
-                return collection;
-            }
-            else {
-                return NotFound();
-            }
-        }
-
-        private ActionResult<Task> GetActionResult(Task task) 
-        {
-            if(task != null) {
-                return task;
-            }
-            else {
-                return NotFound();
-            }
         }
     }
 }
