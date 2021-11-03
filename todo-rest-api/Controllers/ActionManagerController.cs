@@ -36,7 +36,17 @@ namespace todo_rest_api {
             }
         }
 
-        protected ActionResult<List<ListInfoDTO>> GetActionResult(List<ListInfoDTO> collection) 
+        protected ActionResult<List<DashboardDTO>> GetActionResult(List<DashboardDTO> collection) 
+        {
+            if(collection != null) {
+                return collection;
+            }
+            else {
+                return NotFound();
+            }
+        }
+
+        protected ActionResult<List<TaskListForTodayDTO>> GetActionResult(List<TaskListForTodayDTO> collection) 
         {
             if(collection != null) {
                 return collection;

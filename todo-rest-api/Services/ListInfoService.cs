@@ -13,9 +13,10 @@ namespace todo_rest_api
             this._context = context;
         }
 
-        public List<ListInfoDTO> GetListInfo() {
-            List<ListInfoDTO> list = new List<ListInfoDTO>();
-            list.Add(new ListInfoDTO(GetTasksCountForToday(), GetAllListWithCountOfNonDoneTasks()));
+        public List<DashboardDTO> GetListInfo()
+        {
+            List<DashboardDTO> list = new List<DashboardDTO>();
+            list.Add(new DashboardDTO(GetTasksCountForToday(), GetAllListWithCountOfNonDoneTasks()));
             return list;
         }
 
@@ -44,6 +45,27 @@ namespace todo_rest_api
             foreach (TaskList taskList in taskLists)
             {
                 list.Add(new ListAndCountOfNonDoneTasksDTO(taskList.Id, taskList.Title, GetCountOfNonDoneTasks(taskList)));
+            }
+            return list;
+        }
+
+
+        public List<TaskListForTodayDTO> GetTaskListWithNonDoneTasksForToday()
+        {
+            List<TaskListForTodayDTO> list = new List<TaskListForTodayDTO>();
+            List<Task> tasks = new List<Task>();
+            foreach(Task task in _context.Tasks) {
+                if(task.Done == false && task.DueDate >= DateTime.Today && task.DueDate < DateTime.Today.AddDays(1)){
+                    tasks.Add(task);
+                }
+            }
+
+            foreach(TaskList taskList in _context.TaskLists) {
+                foreach(Task task in tasks) {
+                    if(taskList.Id == task.TaskListId) {
+                        list.Add(new TaskListForTodayDTO(taskList.Title, task));
+                    }
+                }
             }
             return list;
         }

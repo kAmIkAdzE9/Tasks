@@ -6,21 +6,27 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace todo_rest_api
 {
-    [Route("/dashboard")]
+    [Route("")]
     [ApiController]
-    public class DashboardController : ActionManagerController 
+    public class ListInfoController : ActionManagerController 
     {
          ListInfoService listInfoService;
 
-        public DashboardController(ListInfoService listInfoService)
+        public ListInfoController(ListInfoService listInfoService)
         {
             this.listInfoService = listInfoService;
         }  
 
-        [HttpGet]
-        public ActionResult<List<ListInfoDTO>> GetListInfo()        
+        [HttpGet("dashboard")]
+        public ActionResult<List<DashboardDTO>> GetListInfo()        
         {
             return GetActionResult(listInfoService.GetListInfo());
+        }
+
+        [HttpGet("collection/today")]
+        public ActionResult<List<TaskListForTodayDTO>> GetTaskListWithNonDoneTasksForToday()        
+        {
+            return GetActionResult(listInfoService.GetTaskListWithNonDoneTasksForToday());
         }
     }
 }
