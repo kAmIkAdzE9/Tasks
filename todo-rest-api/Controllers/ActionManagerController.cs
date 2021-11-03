@@ -11,6 +11,11 @@ namespace todo_rest_api {
             return Ok();
         }
 
+        protected ActionResult<int> GetActionResult(int x)
+        {
+            return x;
+        }
+
         protected ActionResult<Task> GetActionResult(Task task) 
         {
             if(task != null) {
@@ -22,6 +27,16 @@ namespace todo_rest_api {
         }
 
         protected ActionResult<List<Task>> GetActionResult(List<Task> collection) 
+        {
+            if(collection != null) {
+                return collection;
+            }
+            else {
+                return NotFound();
+            }
+        }
+
+        protected ActionResult<List<ListInfoDTO>> GetActionResult(List<ListInfoDTO> collection) 
         {
             if(collection != null) {
                 return collection;
