@@ -38,13 +38,13 @@ namespace todo_rest_api
             return counter;
         }
 
-        private List<ListAndCountOfNonDoneTasksDTO> GetAllListWithCountOfNonDoneTasks()
+        private List<ListAndCountOfNonDoneTasks> GetAllListWithCountOfNonDoneTasks()
         {
-            List<ListAndCountOfNonDoneTasksDTO> list = new List<ListAndCountOfNonDoneTasksDTO>();
+            List<ListAndCountOfNonDoneTasks> list = new List<ListAndCountOfNonDoneTasks>();
             List<TaskList> taskLists = _context.TaskLists.ToList();
             foreach (TaskList taskList in taskLists)
             {
-                list.Add(new ListAndCountOfNonDoneTasksDTO(taskList.Id, taskList.Title, GetCountOfNonDoneTasks(taskList)));
+                list.Add(new ListAndCountOfNonDoneTasks(taskList.Id, taskList.Title, GetCountOfNonDoneTasks(taskList)));
             }
             return list;
         }
