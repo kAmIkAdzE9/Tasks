@@ -54,20 +54,56 @@ namespace todo_rest_api
         {
             List<TaskListForTodayDTO> list = new List<TaskListForTodayDTO>();
             List<Task> tasks = new List<Task>();
-            foreach(Task task in _context.Tasks) {
-                if(task.Done == false && task.DueDate >= DateTime.Today && task.DueDate < DateTime.Today.AddDays(1)){
+            foreach (Task task in _context.Tasks)
+            {
+                if (task.Done == false && task.DueDate >= DateTime.Today && task.DueDate < DateTime.Today.AddDays(1))
+                {
                     tasks.Add(task);
                 }
             }
 
-            foreach(TaskList taskList in _context.TaskLists) {
-                foreach(Task task in tasks) {
-                    if(taskList.Id == task.TaskListId) {
+            foreach (TaskList taskList in _context.TaskLists)
+            {
+                foreach (Task task in tasks)
+                {
+                    if (taskList.Id == task.TaskListId)
+                    {
                         list.Add(new TaskListForTodayDTO(taskList.Title, task));
                     }
                 }
             }
             return list;
+        }
+
+        public List<TaskListDTO> GetTaskList(int listId, bool flag)
+        {
+            List<TaskListDTO> list = new List<TaskListDTO>();
+            List<Task> tasks = new List<Task>();
+            foreach (Task task in _context.Tasks)
+            {
+                if (task.TaskListId == listId)
+                {
+                    if (flag)
+                    {
+                        tasks.Add(task);
+                    }
+                    else
+                    {
+                        if (task.Done == false)
+                        {
+                            tasks.Add(task);
+                        }
+                    }
+                }
+            }
+
+            foreach(TaskList taskList in _context.TaskLists) {
+                if(taskList.Id == listId) {
+                    list.Add(new TaskListDTO(taskList.Title, tasks));
+                    return list;
+                }
+            }
+            return null;
         }
     }
 }

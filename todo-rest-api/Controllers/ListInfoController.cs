@@ -28,5 +28,11 @@ namespace todo_rest_api
         {
             return GetActionResult(listInfoService.GetTaskListWithNonDoneTasksForToday());
         }
+
+        [HttpGet("lists/{listId}/tasks")]
+        public ActionResult<List<TaskListDTO>> GetTaskList(int listId, bool all)        
+        {
+            return GetActionResult(listInfoService.GetTaskList(listId, all));
+        }
     }
 }

@@ -55,5 +55,15 @@ namespace todo_rest_api {
                 return NotFound();
             }
         }
+
+        protected ActionResult<List<TaskListDTO>> GetActionResult(List<TaskListDTO> collection) 
+        {
+            if(collection != null) {
+                return collection;
+            }
+            else {
+                return NotFound();
+            }
+        }
     }
 }
