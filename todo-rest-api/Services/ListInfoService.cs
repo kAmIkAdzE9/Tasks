@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace todo_rest_api
 {
@@ -13,77 +14,89 @@ namespace todo_rest_api
             this._context = context;
         }
 
-        public List<DashboardDTO> GetListInfo()
-        {
-            List<DashboardDTO> list = new List<DashboardDTO>();
-            list.Add(new DashboardDTO(GetTasksCountForToday(), GetAllListWithCountOfNonDoneTasks()));
-            return list;
-        }
-
+        //Dashboard 1
         private int GetTasksCountForToday()
         {
             return _context.Tasks.Where(t => (t.DueDate >= DateTime.Today) && (t.DueDate < DateTime.Today.AddDays(1))).Count();
         }
 
+        //Dashboard 2
         private int GetCountOfNonDoneTasks(TaskList taskList)
         {
-            int counter = 0;
-            foreach (Task task in _context.Tasks)
-            {
-                if ((task.Done == false) && (task.TaskListId == taskList.Id))
-                {
-                    counter++;
-                }
-            }
-            return counter;
+            return _context.Tasks.Where(t => t.Done == false && t.TaskListId == taskList.Id).Count();
         }
 
-        private List<ListAndCountOfNonDoneTasks> GetAllListWithCountOfNonDoneTasks()
+        //Dashboard 2
+        private List<ListAndCountOfNonDoneTasksDTO> GetAllListWithCountOfNonDoneTasks()
         {
-            List<ListAndCountOfNonDoneTasks> list = new List<ListAndCountOfNonDoneTasks>();
-            List<TaskList> taskLists = _context.TaskLists.ToList();
-            foreach (TaskList taskList in taskLists)
+            List<ListAndCountOfNonDoneTasksDTO> list = new List<ListAndCountOfNonDoneTasksDTO>();
+
+            foreach (TaskList taskList in _context.TaskLists.ToList())
             {
-                list.Add(new ListAndCountOfNonDoneTasks(taskList.Id, taskList.Title, GetCountOfNonDoneTasks(taskList)));
+                list.Add(new ListAndCountOfNonDoneTasksDTO(taskList.Id, taskList.Title, GetCountOfNonDoneTasks(taskList)));
             }
             return list;
         }
 
-
-        public List<TaskListForTodayDTO> GetTaskListWithNonDoneTasksForToday()
+        //Dashboard 2 alternarive
+        private List<ListAndCountOfNonDoneTasksDTO> GetAllListWithCountOfNonDoneTasks2()
         {
-            List<TaskListForTodayDTO> list = new List<TaskListForTodayDTO>();
-            List<Task> tasks = new List<Task>();
-            foreach (Task task in _context.Tasks)
-            {
-                if (task.Done == false && task.DueDate >= DateTime.Today && task.DueDate < DateTime.Today.AddDays(1))
-                {
-                    tasks.Add(task);
-                }
-            }
+            List<ListAndCountOfNonDoneTasksDTO> list = new List<ListAndCountOfNonDoneTasksDTO>();
+            var query = _context.TaskLists
+            .Include(p => p.Tasks)
+            .Select(l => new ListAndCountOfNonDoneTasksDTO(l.Id, l.Title, l.Tasks.Count())).ToList();
+            return query;
+        }
 
-            foreach (TaskList taskList in _context.TaskLists)
+        //Dashboard All
+        public List<DashboardDTO> GetListInfo()
+        {
+            List<DashboardDTO> list = new List<DashboardDTO>();
+            list.Add(new DashboardDTO(GetTasksCountForToday(), GetAllListWithCountOfNonDoneTasks2()));
+            return list;
+        }
+
+        private List<TaskWithListTitleDTO> ConvertTaskToTaskWithListTitleDTO(List<Task> tasks)
+        {
+            List<TaskWithListTitleDTO> list = new List<TaskWithListTitleDTO>();
+            foreach (Task task in tasks)
             {
-                foreach (Task task in tasks)
+                foreach (TaskList taskList in _context.TaskLists)
                 {
                     if (taskList.Id == task.TaskListId)
                     {
-                        list.Add(new TaskListForTodayDTO(taskList.Title, task));
+                        list.Add(new TaskWithListTitleDTO
+                        {
+                            ListTitle = taskList.Title,
+                            TaskListId = taskList.Id,
+                            Id = task.Id,
+                            Title = task.Title,
+                            Description = task.Description,
+                            DueDate = task.DueDate,
+                            Done = task.Done
+                        });
+                        break;
                     }
                 }
             }
             return list;
         }
 
-        public List<TaskListDTO> GetTaskList(int listId, bool flag)
+        //collection/today
+        public List<TaskWithListTitleDTO> GetTaskListWithNonDoneTasksForToday()
         {
-            List<TaskListDTO> list = new List<TaskListDTO>();
+            return ConvertTaskToTaskWithListTitleDTO(_context.Tasks.Where(t => t.DueDate >= DateTime.Today && t.DueDate < DateTime.Today.AddDays(1)).ToList());
+        }
+
+        //lists/{listId}/tasks
+        public List<TaskWithListTitleDTO> GetTaskList(int listId, bool all)
+        {
             List<Task> tasks = new List<Task>();
             foreach (Task task in _context.Tasks)
             {
                 if (task.TaskListId == listId)
                 {
-                    if (flag)
+                    if (all)
                     {
                         tasks.Add(task);
                     }
@@ -96,14 +109,7 @@ namespace todo_rest_api
                     }
                 }
             }
-
-            foreach(TaskList taskList in _context.TaskLists) {
-                if(taskList.Id == listId) {
-                    list.Add(new TaskListDTO(taskList.Title, tasks));
-                    return list;
-                }
-            }
-            return null;
+            return ConvertTaskToTaskWithListTitleDTO(tasks);
         }
     }
 }

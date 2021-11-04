@@ -24,13 +24,13 @@ namespace todo_rest_api
         }
 
         [HttpGet("collection/today")]
-        public ActionResult<List<TaskListForTodayDTO>> GetTaskListWithNonDoneTasksForToday()        
+        public ActionResult<List<TaskWithListTitleDTO>> GetTaskListWithNonDoneTasksForToday()        
         {
             return GetActionResult(listInfoService.GetTaskListWithNonDoneTasksForToday());
         }
 
         [HttpGet("lists/{listId}/tasks")]
-        public ActionResult<List<TaskListDTO>> GetTaskList(int listId, bool all)        
+        public ActionResult<List<TaskWithListTitleDTO>> GetTaskList(int listId, bool all)        
         {
             return GetActionResult(listInfoService.GetTaskList(listId, all));
         }

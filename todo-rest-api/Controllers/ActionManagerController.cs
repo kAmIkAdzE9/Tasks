@@ -46,17 +46,7 @@ namespace todo_rest_api {
             }
         }
 
-        protected ActionResult<List<TaskListForTodayDTO>> GetActionResult(List<TaskListForTodayDTO> collection) 
-        {
-            if(collection != null) {
-                return collection;
-            }
-            else {
-                return NotFound();
-            }
-        }
-
-        protected ActionResult<List<TaskListDTO>> GetActionResult(List<TaskListDTO> collection) 
+        protected ActionResult<List<TaskWithListTitleDTO>> GetActionResult(List<TaskWithListTitleDTO> collection) 
         {
             if(collection != null) {
                 return collection;
