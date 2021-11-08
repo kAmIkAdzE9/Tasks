@@ -24,7 +24,7 @@ namespace todo_rest_api
         }
         
         [HttpPost]
-        public ActionResult<Task> CreateTaskInList(Task task)
+        public ActionResult<Task> CreateTaskInList(TaskWithoutTaskListDTO task)
         {
             return GetActionResult(toDoItemService.CreateTaskInList(task));
         }

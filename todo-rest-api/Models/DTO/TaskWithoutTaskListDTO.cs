@@ -2,7 +2,7 @@ using System;
 
 namespace todo_rest_api
 {
-    public class Task
+    public class TaskWithoutTaskListDTO
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -10,6 +10,5 @@ namespace todo_rest_api
         public DateTime? DueDate { get; set; }
         public bool Done { get; set; }
         public int TaskListId {get; set;}
-        public TaskList TaskList {get; set;}
     }
 }

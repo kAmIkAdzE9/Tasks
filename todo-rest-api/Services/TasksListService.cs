@@ -34,25 +34,23 @@ namespace todo_rest_api
             _context.SaveChanges();
         }
 
-        public Task CreateTaskInList(Task task)
+        public Task CreateTaskInList(TaskWithoutTaskListDTO task)
         {
-            bool flag = false;
-            
-            foreach (TaskList taskList in _context.TaskLists)
-            {
-                if (taskList.Id == task.TaskListId)
+            if(_context.TaskLists.Where(l => l.Id == task.TaskListId).Count() == 1) {
+                Task entity = new Task
                 {
-                    flag = true;
-                }
-            }
-
-            if (flag)
-            {
-                _context.Tasks.Add(task);
+                    Id = task.Id,
+                    Title = task.Title,
+                    Description = task.Description,
+                    DueDate = task.DueDate,
+                    Done = task.Done,
+                    TaskListId = task.TaskListId,
+                    TaskList = null
+                };
+                _context.Tasks.Add(entity);
                 _context.SaveChanges();
-                return task;
+                return entity;
             }
-
             return null;
         }
 

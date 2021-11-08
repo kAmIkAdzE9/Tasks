@@ -26,6 +26,16 @@ namespace todo_rest_api {
             }
         }
 
+        protected ActionResult<TaskWithoutTaskListDTO> GetActionResult(TaskWithoutTaskListDTO task) 
+        {
+            if(task != null) {
+                return task;
+            }
+            else {
+                return NotFound();
+            }
+        }
+
         protected ActionResult<List<Task>> GetActionResult(List<Task> collection) 
         {
             if(collection != null) {
@@ -46,7 +56,7 @@ namespace todo_rest_api {
             }
         }
 
-        protected ActionResult<List<TaskWithListTitleDTO>> GetActionResult(List<TaskWithListTitleDTO> collection) 
+        protected ActionResult<List<TaskWithTaskListDTO>> GetActionResult(List<TaskWithTaskListDTO> collection) 
         {
             if(collection != null) {
                 return collection;
