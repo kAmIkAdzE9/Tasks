@@ -1,3 +1,63 @@
-body {
-    color: green;
+* {
+    margin-left: 20px;
+    margin-right: 20px;
+    padding: 0;
+    background-color: oldlace;
+}
+
+
+header {
+    margin-top: 2%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.header_info_block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.main_block {
+    display: flex;
+    flex-direction: column;
+}
+
+.skills, .profile, .technical {
+    display: flex;
+    flex-direction: table-row;
+    justify-content: flex-start;
+}
+
+.skills_info, .profile_info, .technical_info {
+    display: flex;
+    flex-direction: table-row;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+
+table {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+    border: 3px solid black;
+}
+th, td {
+    padding: 20px;
+    font-size: 110%;
+}
+
+p {
+    font-size: 120%;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-style: italic;
+}
+
+a {
+    font-size: 110%;
+}
+
+h3 {
+    color: grey;
 }
