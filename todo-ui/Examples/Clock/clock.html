@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clock</title>
+    <style>
+        p {
+            font-family: monospace;
+            font-size: 48px;
+            font-weight: bold;
+        }
+        em {
+            font-size: 150%;
+            font-style: normal;
+        }
+        li {
+            font-size: 2rem;
+            cursor: pointer;
+        }
+        li:hover {
+            background-color: lightgrey;
+        }
+        div {
+            padding-bottom: 30px;
+            background-color: aliceblue;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Clock</h1>
+    <p id="clock">10:17:30</p>
+    
+
+    <ol id="log"></ol>
+    <button onclick="logTime()">log Time</button>
+    <script type="text/javascript" src="clock.js"></script>
+</body>
+
+</html>

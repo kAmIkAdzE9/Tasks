@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="todoItem.css">
+    <title>Tasks</title>
+</head>
+
+<body>
+    <h1>Tasks</h1>
+
+    <div id= "mode">
+        <label>All Tasks: </label>
+        <input id = "task-vision-mode" type="checkbox" onclick="updateTaskVisionMode()" checked="true">
+    </div>
+
+    <form id="task-form" name="task">
+        <input type="text" name="title" placeholder="Title">
+        <input type="text" name="description" placeholder="Description">
+        <input type="text" name="date" placeholder="Date">
+        <input type="text" name="done" placeholder="Done">
+        <button type="submit">Add</button>
+    </form>
+
+    <div id="tasks"></div>
+
+    <script type="text/javascript" src="todoItem.js"></script>
+</body>
+
+</html>

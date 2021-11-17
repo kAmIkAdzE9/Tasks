@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDoList</title>
+    <style>
+        ul {
+            font-size: 1.5rem;
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        ul li {
+            cursor: pointer;
+        }
+        .done {
+            color: gray;
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>ToDoList</h1>
+    <ul id="tasks"></ul>
+    <script>
+        let taskListNode = document.getElementById("tasks");
+        let tasks = [
+            {done: true, name: 'task1'},
+            {done: false, name: 'task2'},
+            {done: false, name: 'task3'},
+            {done: false, name: 'task4'}
+        ];
+
+        function render() {
+            taskListNode.innerHTML = '';
+            for (let task of tasks) {
+                let taskNode = document.createElement('li');
+                taskNode.innerText = task.name;
+                if(task.done) taskNode.classList.add('done');
+                taskNode.onclick = function () {
+                    task.done = !task.done;
+                    render();
+                }
+                taskListNode.appendChild(taskNode);
+            }
+        }
+
+        render();
+    </script>
+</body>
+
+</html>
