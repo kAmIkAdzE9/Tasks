@@ -51,17 +51,16 @@ function appendTask(task) {
 
         if (done) {
             task_done.checked = true;
-            task_title.classList.add('task-done')
+            container.classList.add('task-done')
         }
 
         task_done.onclick = function () {
+            container.classList.toggle('task-done');
             if (task_done.checked) {
-                task_title.classList.add('task-done');
                 tasks.find(t => t == task).done = true;
                 task_date.classList.remove('expired-date');
             }
             else {
-                task_title.classList.remove('task-done');
                 tasks.find(t => t == task).done = false;
                 if (new Date() > new Date(date).setHours(23, 59, 59)) {
                     task_date.classList.add('expired-date');
@@ -108,20 +107,8 @@ function getStringOfDate(date) {
 tasks.forEach(appendTask);
 
 function updateTaskVisionMode() {
-    const taskVisionMode = document.getElementById('task-vision-mode');
-    tasksElement.innerHTML = '';
-    for (const value of Object.values(tasks)) {
-        if (taskVisionMode.checked) {
-            appendTask(value);
-        }
-        else {
-            if (!value.done) {
-                appendTask(value);
-            }
-        }
-    }
+    document.getElementById('tasks').classList.toggle('invisible');
 }
-
 
 let taskForm = document.forms['task'];
 
@@ -131,6 +118,11 @@ taskForm.addEventListener('submit', (event) => {
 
     let taskObj = Object.fromEntries(formData.entries());
     if(taskObj['title'] != '') {
+
+        if(new Date(taskObj['date']) == 'Invalid Date') {
+            taskObj['date'] = '';
+        }
+
         if(taskObj['done'] == 'true') {
             taskObj['done'] = true;
         }

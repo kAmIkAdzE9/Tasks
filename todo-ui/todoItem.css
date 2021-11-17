@@ -43,11 +43,15 @@ h1 {
     font-size: 16px;
 }
 
-.task-done {
+.task-done h2 {
     color: gray;
     text-decoration: line-through;
 }
 
 .expired-date {
     color: red;
+}
+
+.invisible .task-done{
+    display: none;
 }

@@ -5,10 +5,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="test.css">
-    <title>Test</title>
+    <title>Tasks</title>
 </head>
 
 <body>
+    <header>
+        <h1>Tasks</h1>
+    </header>
+
+    <main>
+        <section id="mode">
+            <label>All Tasks: </label>
+            <input type="checkbox" onclick="updateTaskVisionMode()" checked="true">
+        </section>
+
+        <section>
+            <form id="task-form" name="task">
+                <input type="text" name="title" placeholder="Title">
+                <input type="text" name="description" placeholder="Description">
+                <input type="text" name="date" placeholder="Date">
+                <input type="text" name="done" placeholder="Done">
+                <button type="submit">Add</button>
+            </form>
+        </section>
+
+        <section id="tasks"></section>
+
+    </main>
+
     <script type="text/javascript" src="test.js"></script>
 </body>
 
