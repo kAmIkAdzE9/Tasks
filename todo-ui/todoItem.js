@@ -57,7 +57,7 @@ function appendTask(task) {
         task_done.onclick = function () {
             container.classList.toggle('task-done');
             if (task_done.checked) {
-                tasks.find(t => t == task).done = true;
+                task.done = true;
                 task_date.classList.remove('expired-date');
             }
             else {
@@ -107,7 +107,7 @@ function getStringOfDate(date) {
 tasks.forEach(appendTask);
 
 function updateTaskVisionMode() {
-    document.getElementById('tasks').classList.toggle('invisible');
+    document.getElementById('tasks').classList.toggle('hide-done-task');
 }
 
 let taskForm = document.forms['task'];
@@ -117,21 +117,11 @@ taskForm.addEventListener('submit', (event) => {
     let formData = new FormData(taskForm);
 
     let taskObj = Object.fromEntries(formData.entries());
-    if(taskObj['title'] != '') {
-
-        if(new Date(taskObj['date']) == 'Invalid Date') {
-            taskObj['date'] = '';
-        }
-
-        if(taskObj['done'] == 'true') {
-            taskObj['done'] = true;
-        }
-        else {
-            taskObj['done'] = false;
-        }
+    taskObj.title = taskObj.title.trim();
+    if(taskObj.title != '') {
         let task = new Task(taskObj);
         tasks.push(task);
         appendTask(task);
+        taskForm.reset();
     }
-    taskForm.reset();
 })

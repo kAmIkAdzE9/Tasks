@@ -12,15 +12,14 @@
     <h1>Tasks</h1>
 
     <div id= "mode">
-        <label>All Tasks: </label>
-        <input id = "task-vision-mode" type="checkbox" onclick="updateTaskVisionMode()" checked="true">
+        <label>Show non-done tasks: </label>
+        <input type="checkbox" onclick="updateTaskVisionMode()">
     </div>
 
     <form id="task-form" name="task">
-        <input type="text" name="title" placeholder="Title">
+        <input required type="text" name="title" placeholder="Title">
         <input type="text" name="description" placeholder="Description">
-        <input type="text" name="date" placeholder="Date">
-        <input type="text" name="done" placeholder="Done">
+        <input type="date" name="date" placeholder="Date">
         <button type="submit">Add</button>
     </form>
 
