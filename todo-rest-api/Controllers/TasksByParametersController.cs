@@ -18,7 +18,7 @@ namespace todo_rest_api
         }  
 
         [HttpGet]
-        public ActionResult<Task> GetItemFromList(int taskId)        
+        public ActionResult<TaskWithoutTaskListDTO> GetItemFromList(int taskId)        
         {
             return GetActionResult(toDoItemService.GetItemFromList(taskId));
         }
@@ -26,18 +26,20 @@ namespace todo_rest_api
         [HttpPost]
         public ActionResult<Task> CreateTaskInList(TaskWithoutTaskListDTO task)
         {
+            Console.WriteLine(task.TaskListId);
             return GetActionResult(toDoItemService.CreateTaskInList(task));
         }
 
         [HttpPut]
-        public ActionResult<Task> ReplaceItem(int taskId, Task task)
+        public ActionResult<TaskWithoutTaskListDTO> ReplaceItem(int taskId, TaskWithoutTaskListDTO task)
         {
             return GetActionResult(toDoItemService.ReplaceItem(taskId, task));
         }
 
         [HttpPatch]
-        public ActionResult<Task> PartialUpdate(int taskId, Task task)
+        public ActionResult<TaskWithoutTaskListDTO> PartialUpdate(int taskId, TaskWithoutTaskListDTO task)
         {
+            Console.WriteLine("title is " + task.Title);
             return GetActionResult(toDoItemService.PartialUpdate(taskId, task));
         }
         

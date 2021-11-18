@@ -74,7 +74,7 @@ namespace todo_rest_api
         public List<DashboardDTO> GetListInfo()
         {
             List<DashboardDTO> list = new List<DashboardDTO>();
-            list.Add(new DashboardDTO(GetTasksCountForToday(), GetAllListWithCountOfNonDoneTasksUsingSql()));
+            list.Add(new DashboardDTO(GetTasksCountForToday(), GetAllListWithCountOfNonDoneTasks()));
             return list;
         }
 

@@ -18,19 +18,19 @@ namespace todo_rest_api
         }  
 
         [HttpGet]
-        public ActionResult<Task> GetItemFromList(int taskId)        
+        public ActionResult<TaskWithoutTaskListDTO> GetItemFromList(int taskId)        
         {
             return GetActionResult(toDoItemService.GetItemFromList(taskId));
         }
 
         [HttpPut]
-        public ActionResult<Task> ReplaceItem(int taskId, Task task)
+        public ActionResult<TaskWithoutTaskListDTO> ReplaceItem(int taskId, TaskWithoutTaskListDTO task)
         {
             return GetActionResult(toDoItemService.ReplaceItem(taskId, task));
         }
 
         [HttpPatch]
-        public ActionResult<Task> PartialUpdate(int taskId, Task task)
+        public ActionResult<TaskWithoutTaskListDTO> PartialUpdate(int taskId, TaskWithoutTaskListDTO task)
         {
             return GetActionResult(toDoItemService.PartialUpdate(taskId, task));
         }

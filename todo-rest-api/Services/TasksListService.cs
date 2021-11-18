@@ -18,12 +18,17 @@ namespace todo_rest_api
             return _context.TaskLists.ToList();
         }
 
-        public Task GetItemFromList(int taskId)
+        public List<TaskWithoutTaskListDTO> GetTasksList(int listId) {
+            List<Task> tasks = _context.Tasks.Where(t => t.TaskListId == listId).ToList();
+            return tasks.ConvertAll(tasks=>new TaskWithoutTaskListDTO(tasks.Id, tasks.Title, tasks.Description, tasks.DueDate, tasks.Done, tasks.TaskListId));
+        }
+
+        public TaskWithoutTaskListDTO GetItemFromList(int taskId)
         {
             foreach (Task task in _context.Tasks)
             {
                 if (task.Id == taskId)
-                { return task; }
+                { return new TaskWithoutTaskListDTO(task.Id, task.Title, task.Description, task.DueDate, task.Done, task.TaskListId); }
             }
             return null;
         }
@@ -44,8 +49,7 @@ namespace todo_rest_api
                     Description = task.Description,
                     DueDate = task.DueDate,
                     Done = task.Done,
-                    TaskListId = task.TaskListId,
-                    TaskList = null
+                    TaskListId = task.TaskListId
                 };
                 _context.Tasks.Add(entity);
                 _context.SaveChanges();
@@ -80,9 +84,9 @@ namespace todo_rest_api
             _context.SaveChanges();
         }
 
-        public Task ReplaceItem(int taskId, Task task)
+        public TaskWithoutTaskListDTO ReplaceItem(int taskId, TaskWithoutTaskListDTO task)
         {
-            Task outputTask = null;
+            TaskWithoutTaskListDTO outputTask = null;
             foreach (Task item in _context.Tasks)
             {
                 if (item.Id == taskId)
@@ -91,7 +95,7 @@ namespace todo_rest_api
                     item.Description = task.Description;
                     item.DueDate = task.DueDate;
                     item.Done = task.Done;
-                    outputTask = item;
+                    outputTask = new TaskWithoutTaskListDTO(item.Id, item.Title, item.Description, item.DueDate, item.Done, item.TaskListId);
                     break;
                 }
             }
@@ -99,9 +103,9 @@ namespace todo_rest_api
             return outputTask;
         }
 
-        public Task PartialUpdate(int taskId, Task task)
+        public TaskWithoutTaskListDTO PartialUpdate(int taskId, TaskWithoutTaskListDTO task)
         {
-            Task outputTask = null;
+            TaskWithoutTaskListDTO outputTask = null;
             foreach (Task item in _context.Tasks)
             {
                 if (item.Id == taskId)
@@ -122,7 +126,7 @@ namespace todo_rest_api
                     {
                         item.Done = task.Done;
                     }
-                    outputTask = item;
+                    outputTask = new TaskWithoutTaskListDTO(item.Id, item.Title, item.Description, item.DueDate, item.Done, item.TaskListId);
                     break;
                 }
             }

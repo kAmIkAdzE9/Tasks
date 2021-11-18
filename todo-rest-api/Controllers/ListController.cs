@@ -23,6 +23,12 @@ namespace todo_rest_api
             return toDoItemService.GetAll();
         }
 
+        [HttpGet ("{listId}")]
+        public ActionResult<List<TaskWithoutTaskListDTO>> GetTasksList(int listId)
+        {
+            return toDoItemService.GetTasksList(listId);
+        }
+
         [HttpPost]
         public ActionResult CreateTasksList(string title)
         {
