@@ -38,7 +38,27 @@ contactForm.addEventListener('submit', (event) => {
     event.preventDefault();
     let formData = new FormData(contactForm);
     const contact = new Contact (Object.fromEntries(formData.entries()));
+
     contacts.push(contact);
     appendContact(contact);
     contactForm.reset();
+
+    // createContact(contact)
+        // .then(appendContact, alert)
+        // .then(_ => contactForm.reset())
 })
+
+
+
+const contactsEndpoint = 'http://localhost:3000/contacts';
+
+function createContact(contact) {
+    return fetch(contactsEndpoint, {
+        method: 'POST', 
+        headers:  {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(contact)
+    })
+    .then(response => response.json())
+}
