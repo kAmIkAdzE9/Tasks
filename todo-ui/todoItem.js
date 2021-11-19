@@ -1,4 +1,6 @@
 const listId = 1;
+const tasksEndpoint = 'http://localhost:5000/tasks';
+const tasksGetEndpoint = 'http://localhost:5000/lists/1';
 
 class Task {
     constructor(title, description, dueDate, done) {
@@ -34,19 +36,52 @@ class Task {
     }
 }
 
-// let tasks = [
-//     new Task('task1', 'this is task 1', '2021-11-15', true),
-//     new Task('task2', 'this is task 2', '2021-11-18', false),
-//     new Task('task3', '', '2021-11-17', false),
-//     new Task('task4', 'this is task 4', '', false),
-//     new Task('task5', '', '2021-11-17', false),
-//     new Task('task6', 'this is task 6', '2021-11-17', false),
-//     new Task('task7', 'this is task 7', new Date('2021-11-15'), true),
-//     new Task('task8', 'this is task 8', '2021-11-14', true),
-//     new Task('task9', 'this is task 9', '', false)
-// ]
+const taskApi = {
+    getAllTasks() {
+        return fetch(tasksGetEndpoint)
+            .then(response => response.json())
+    },
+
+    createTask(task) {
+        return fetch(tasksEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(task)
+        })
+            .then(response => response.json())
+    },
+
+    deleteTask(event, task) {
+        let taskDeleteEndpoint = `${tasksEndpoint}?taskId=${task.id}`;
+        return fetch(taskDeleteEndpoint, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then (response => response.ok ? deleteTaskFromDOM(event) : console.log(response))
+    },
+
+    partialUpdateTask(task) {
+        let taskPatchEndpoint = `${tasksEndpoint}?taskId=${task.id}`;
+        fetch(taskPatchEndpoint, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(task)
+        })
+            .then(response => console.log(response.statusText));
+    }
+}
 
 const tasksElement = document.getElementById('tasks');
+
+function getStringOfDate(date) {
+    return `${date.getDate()}.${1 + date.getMonth()}.${date.getFullYear()}`;
+}
 
 function appendTask(task) {
     const { title, description, dueDate, done } = task;
@@ -84,7 +119,7 @@ function appendTask(task) {
                 task_date.classList.add('expired-date');
             }
         }
-        partialUpdateTask(tasksEndpoint, task);
+        taskApi.partialUpdateTask(task);
     }
 
     container.appendChild(label);
@@ -104,25 +139,15 @@ function appendTask(task) {
     let deleteButton = document.createElement('button');
     deleteButton.innerText = 'Delete';
     deleteButton.onclick = (event) => {
-        deleteTask(tasksEndpoint, event, task);
+        taskApi.deleteTask(event, task);
     }
     container.appendChild(deleteButton);
 
     tasksElement.appendChild(container);
 }
 
-// tasks.forEach(appendTask);
-
-// function deleteTask(event, task) {
-//     const target = event.target;
-//     let index = tasks.indexOf(task);
-//     tasks.splice(index, 1);
-//     target.parentNode.remove();
-// }
-
-function getStringOfDate(date) {
-    return `${date.getDate()}.${1 + date.getMonth()}.${date.getFullYear()}`;
-}
+taskApi.getAllTasks()
+    .then(tasks => tasks.forEach(appendTask));
 
 function updateTaskVisionMode() {
     document.getElementById('tasks').classList.toggle('hide-done-task');
@@ -130,71 +155,23 @@ function updateTaskVisionMode() {
 
 let taskForm = document.forms['task'];
 
-//endpoints
-const tasksEndpoint = 'http://localhost:5000/tasks';
-const tasksGetEndpoint = 'http://localhost:5000/lists/1';
-
-
 taskForm.addEventListener('submit', (event) => {
     event.preventDefault();
     let formData = new FormData(taskForm);
 
     let taskObj = Object.fromEntries(formData.entries());
     taskObj.title = taskObj.title.trim();
+    taskObj.dueDate = new Date(taskObj.dueDate);
     if (taskObj.title != '') {
         let task = new Task(taskObj);
-        // tasks.push(task);
-        // appendTask(task);
-        // taskForm.reset();
-
-        createTask(tasksEndpoint, task)
+        taskApi.createTask(task)
             .then(appendTask)
             .then(_ => taskForm.reset())
     }
 })
 
-
-function createTask(tasksPostEndpoint, task) {
-    return fetch(tasksPostEndpoint, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(task)
-    })
-    .then(response => response.json())
-}
-
-function readTask(tasksGetEndpoint) {
-    return fetch(tasksGetEndpoint)
-        .then(response => response.json())
-        .then(tasks => tasks.forEach(appendTask))
-}
-readTask(tasksGetEndpoint);
-
-
-function deleteTask(tasksEndpoint, event, task) {
+function deleteTaskFromDOM(event) {
     const target = event.target;
     target.parentNode.remove();
-    let taskDeleteEndpoint = `${tasksEndpoint}?taskId=${task.id}`;
-
-    fetch(taskDeleteEndpoint, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => console.log(response.statusText))
-}
-
-function partialUpdateTask(tasksEndpoint, task) {
-    let taskPatchEndpoint = `${tasksEndpoint}?taskId=${task.id}`;
-    fetch(taskPatchEndpoint, {
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(task)
-    })
-    .then(response => console.log(response.statusText));
+    console.log('OK');
 }
