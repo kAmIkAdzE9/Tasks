@@ -26,7 +26,6 @@ namespace todo_rest_api
         [HttpPost]
         public ActionResult<Task> CreateTaskInList(TaskWithoutTaskListDTO task)
         {
-            Console.WriteLine(task.TaskListId);
             return GetActionResult(toDoItemService.CreateTaskInList(task));
         }
 
@@ -39,7 +38,6 @@ namespace todo_rest_api
         [HttpPatch]
         public ActionResult<TaskWithoutTaskListDTO> PartialUpdate(int taskId, TaskWithoutTaskListDTO task)
         {
-            Console.WriteLine("title is " + task.Title);
             return GetActionResult(toDoItemService.PartialUpdate(taskId, task));
         }
         
