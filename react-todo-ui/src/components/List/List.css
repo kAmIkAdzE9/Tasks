@@ -1,0 +1,7 @@
+.list {
+    display: flex;
+}
+
+.list p {
+    padding-left: 10px;
+}

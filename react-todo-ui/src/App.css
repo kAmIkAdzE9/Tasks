@@ -1,0 +1,8 @@
+.App {
+    display: flex;
+    flex-basis: 50%;
+}
+
+#app-lists {
+    width: 300px;
+}
