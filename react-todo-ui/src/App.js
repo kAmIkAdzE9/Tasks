@@ -2,71 +2,50 @@ import './App.css';
 import Tasks from './components/Tasks/Tasks'
 import TaskForm from './components/TaskForm/TaskForm'
 import Lists from './components/Lists/Lists'
+import TaskAPI from './TaskAPI';
+import { useEffect, useState } from 'react';
 
 function App() {
-  const tasks = [
-    {
-      id: '1',
-      title: 'task 1',
-      description: 'this is task 1',
-      dueDate: '24.11.2021',
-      done: false,
-      taskListId: '1'
-    },
-    {
-      id: '2',
-      title: 'task 2',
-      description: 'this is task 2',
-      dueDate: '24.11.2021',
-      done: true,
-      taskListId: '1'
-    },
-    {
-      id: '3',
-      title: 'task 3',
-      description: 'this is task 3',
-      dueDate: '24.11.2021',
-      done: false,
-      taskListId: '1'
-    },
-    {
-      id: '4',
-      title: 'task 4',
-      description: 'this is task 4',
-      dueDate: '24.11.2021',
-      done: true,
-      taskListId: '2'
-    },
-    {
-      id: '5',
-      title: 'task 5',
-      description: 'this is task 5',
-      dueDate: '24.11.2021',
-      done: false,
-      taskListId: '2'
-    }
-  ]
 
-  const lists = [
-    {
-      id: '1',
-      title: 'Global task 1',
-      count: '3'
-    },
-    {
-      id: '2',
-      title: 'Global task 2',
-      count: '2'
-    }
-  ]
+  const [tasks, setTasks] = useState([]);
+  const [lists, setLists] = useState([]);
+  const [activeList, setActiveList] = useState({id:'1'});
+
+  useEffect(() => { updateList() }, [])
+
+  function updateList() {
+    TaskAPI.getAllLists().then(res => setLists(res[0].listAndCountOfNonDoneTasks));
+  }
+
+  function renderTasks(listId) {
+    TaskAPI.getTasksFromList(listId).then(res => setTasks(res));
+  }
+
+  function listOnClickHandler(id) {
+    setActiveList(lists.filter(l => l.id === id)[0]);
+    renderTasks(id);
+  }
+
+  function removeTask(id) {
+    setTasks(tasks.filter(task => task.id !== id));
+  }
+
+  function addTask(res) {
+    setTasks(
+      [
+        ...tasks,
+        res
+      ])
+  }
+
   return (
     <div className="App">
-      <div id="app-lists">
-        <Lists lists={lists}/>
+      <div id="app-sidebar">
+        <Lists lists={lists} listOnClickHandler={listOnClickHandler} />
       </div>
-      <div>
-        <Tasks tasks={tasks}/>
-        <TaskForm/>
+      <div id="app-content">
+        <Tasks tasks={tasks} removeTask={removeTask} />
+        <TaskForm addTask={addTask} activeList={activeList} setActiveList={setActiveList}/>
       </div>
     </div>
   );

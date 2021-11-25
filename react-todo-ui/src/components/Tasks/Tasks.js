@@ -3,10 +3,9 @@ import './Tasks.css'
 import { Task } from "../Task/Task";
 
 export default function Tasks(props) {
-    const tasks = props.tasks;
     return (
         <div id="tasks">
-            {tasks.map(task => <Task key={task.id} title={task.title} description={task.description} dueDate={task.dueDate}/>)}
+            {props.tasks.map(task =><Task key={task.id} id={task.id} task={task} removeTask={props.removeTask}/>) }
         </div>
-    ) 
+    )
 }

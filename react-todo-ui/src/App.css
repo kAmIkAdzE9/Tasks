@@ -1,8 +1,14 @@
 .App {
     display: flex;
-    flex-basis: 50%;
 }
 
-#app-lists {
-    width: 300px;
+#app-sidebar {
+    position: fixed;
+    width: 200px;
+    height: 100%;
+    border-right: 3px solid black;
+}
+
+#app-content {
+    padding-left: 200px;
 }
