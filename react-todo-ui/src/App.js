@@ -1,41 +1,27 @@
 import './App.css';
-import Tasks from './components/Tasks/Tasks'
-import TaskForm from './components/TaskForm/TaskForm'
-import Lists from './components/Lists/Lists'
+import Lists from './components/Lists/Lists';
+import ToDoListPage from './components/ToDoListPage/ToDoListPage';
 import TaskAPI from './TaskAPI';
 import { useEffect, useState } from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Routes,
+  Route,
+  Link,
+  useParams,
+  Outlet
+} from "react-router-dom";
 
-function App() {
-
-  const [tasks, setTasks] = useState([]);
+export default function App() {
   const [lists, setLists] = useState([]);
-  const [activeList, setActiveList] = useState({id:'1'});
+  const [activeListId, setActiveListId] = useState(1);
 
-  useEffect(() => { updateList() }, [])
-
-  function updateList() {
-    TaskAPI.getAllLists().then(res => setLists(res[0].listAndCountOfNonDoneTasks));
-  }
-
-  function renderTasks(listId) {
-    TaskAPI.getTasksFromList(listId).then(res => setTasks(res));
-  }
+  useEffect(() => {TaskAPI.getAllLists().then(res => setLists(res[0].listAndCountOfNonDoneTasks))}, [])
 
   function listOnClickHandler(id) {
-    setActiveList(lists.filter(l => l.id === id)[0]);
-    renderTasks(id);
-  }
-
-  function removeTask(id) {
-    setTasks(tasks.filter(task => task.id !== id));
-  }
-
-  function addTask(res) {
-    setTasks(
-      [
-        ...tasks,
-        res
-      ])
+    setActiveListId(id);
+    //update tasks in toDoListPage
   }
 
   return (
@@ -44,11 +30,12 @@ function App() {
         <Lists lists={lists} listOnClickHandler={listOnClickHandler} />
       </div>
       <div id="app-content">
-        <Tasks tasks={tasks} removeTask={removeTask} />
-        <TaskForm addTask={addTask} activeList={activeList} setActiveList={setActiveList}/>
+        <nav>
+          <Link to="/toDoListPage">Tasks</Link> |{" "}
+          <Link to="/todayTasksPage">Tasks For Today</Link>
+        </nav>
+        <Outlet/>
       </div>
     </div>
   );
 }
-
-export default App;

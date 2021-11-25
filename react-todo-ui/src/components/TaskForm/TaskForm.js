@@ -10,9 +10,7 @@ export default function TaskForm(props) {
         task.title = task.title.trim();
         task.dueDate = new Date(task.dueDate);
         task.id = '0';
-        task.taskListId = props.activeList.id;
-        props.activeList.countOfNonDoneTasks++;
-        props.setActiveList(props.activeList);
+        task.taskListId = props.activeListId;
         if (task.title !== '') {
             TaskAPI.createTask(task)
                 .then(res => props.addTask(res))

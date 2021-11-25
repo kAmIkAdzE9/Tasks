@@ -1,7 +1,6 @@
 import React from "react";
 import './Lists.css'
 import List from '../List/List'
-import Tasks from "../Tasks/Tasks";
 
 export default function Lists(props) {
     return (

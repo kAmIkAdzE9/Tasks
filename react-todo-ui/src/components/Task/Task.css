@@ -18,3 +18,16 @@
     color: gray;
     text-decoration: line-through;
 }
+
+.task-done h2 {
+    color: gray;
+    text-decoration: line-through;
+}
+
+.task-done #dueDate {
+    color: red;
+}
+
+.hide-done-task .task-done{
+    display: none;
+}

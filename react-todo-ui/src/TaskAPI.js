@@ -1,5 +1,6 @@
 const tasksEndpoint = 'http://localhost:5000/tasks';
 const dashboardEndpoint = 'http://localhost:5000/dashboard';
+const collectionTodayEndpoint = 'http://localhost:5000/collection/today';
 const tasksGetEndpoint = 'http://localhost:5000/lists';
 
 const TaskAPI = {
@@ -10,6 +11,11 @@ const TaskAPI = {
 
     getTasksFromList(listId) {
         return fetch(`${tasksGetEndpoint}/${listId}`)
+            .then (response => response.ok ? response.json() : console.log(response))
+    },
+
+    getTasksFoToday() {
+        return fetch(collectionTodayEndpoint)
             .then (response => response.ok ? response.json() : console.log(response))
     },
 
@@ -35,14 +41,14 @@ const TaskAPI = {
     },
 
     partialUpdateTask(task) {
-        fetch(`${tasksEndpoint}?taskId=${task.id}`, {
+        return fetch(`${tasksEndpoint}?taskId=${task.id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(task)
         })
-            .then(response => console.log(response.statusText));
+            .then(response => response.ok ? response.json() : console.log(response))
     }
 }
 

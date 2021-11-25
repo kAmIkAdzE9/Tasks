@@ -12,3 +12,9 @@
 #app-content {
     padding-left: 200px;
 }
+
+nav {
+    text-align: center;
+    font-size: 24px;
+    font-style: italic;
+}
