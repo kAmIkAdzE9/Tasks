@@ -24,7 +24,6 @@ export default function ToDoListPage() {
 
     function createTask(event) {
         event.preventDefault();
-        console.log('qw')
         let formData = new FormData(event.target);
         let task = Object.fromEntries(formData.entries());
         task.title = task.title.trim();
