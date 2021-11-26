@@ -1,7 +1,14 @@
 .list {
     display: flex;
+    width: 200px;
+    justify-content: center;
 }
 
 .list p {
     padding-left: 10px;
+    text-align: center;
+}
+
+.active-list {
+    background-color: lightgreen;
 }

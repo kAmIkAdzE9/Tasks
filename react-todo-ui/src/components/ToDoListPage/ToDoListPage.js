@@ -4,10 +4,9 @@ import TaskForm from '../TaskForm/TaskForm';
 import TaskAPI from "../../TaskAPI";
 import {useParams} from "react-router";
 
-export default function ToDoListPage(props) {
+export default function ToDoListPage() {
     const [tasks, setTasks] = useState([]);
-    const [activeListId, setActiveListId] = useState(1);
-
+    const [activeListId, setActiveListId] = useState(useParams().id);
     useEffect(() => {renderTasks(activeListId)}, []);
 
     function renderTasks(listId) {
