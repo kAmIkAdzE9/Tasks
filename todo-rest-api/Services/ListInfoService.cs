@@ -99,7 +99,7 @@ namespace todo_rest_api
         //collection/today
         public List<TaskWithTaskListDTO> GetTaskListWithNonDoneTasksForToday()
         {
-            return ConvertTaskToTaskWithListTitleDTO(_context.Tasks.Include(l => l.TaskList).Where(t => t.DueDate >= DateTime.Today && t.DueDate < DateTime.Today.AddDays(1)).ToList());
+            return ConvertTaskToTaskWithListTitleDTO(_context.Tasks.Include(l => l.TaskList).Where(t => t.Done == false).Where(t => t.DueDate < DateTime.Today.AddDays(1)).ToList());
         }
 
         //lists/{listId}/tasks
