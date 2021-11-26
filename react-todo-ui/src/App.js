@@ -4,7 +4,7 @@ import Lists from './components/Lists/Lists';
 import TodayTasksPage from './components/TodayTasksPage/TodayTasksPage';
 import ToDoListPage from './components/ToDoListPage/ToDoListPage';
 import { useEffect, useState } from 'react';
-import { BrowserRouter, Routes, Route, Link} from "react-router-dom";
+import { Routes, Route, Link} from "react-router-dom";
 
 export default function App() {
   const [lists, setLists] = useState([]);
@@ -14,7 +14,7 @@ export default function App() {
 
   function listOnClickHandler(id) {
     setActiveListId(id);
-    window.location.href=`${id}`;
+    //window.location.href = `${id}`;
   }
 
   return (
@@ -23,17 +23,15 @@ export default function App() {
         <Lists lists={lists} listOnClickHandler={listOnClickHandler} />
       </div>
       <div id="app-content">
-        <BrowserRouter>
-          <nav>
-            <Link to={`${activeListId}`}>Tasks</Link> |{" "}
-            <Link to="/todayTasksPage">Tasks For Today</Link>
-          </nav>
-          <Routes>
-            <Route path="/:id" element={<ToDoListPage />} />
-            <Route path="/todayTasksPage" element={<TodayTasksPage />} />
-          </Routes>
-        </BrowserRouter>
+        <nav>
+          <Link className="link" to={`${activeListId}`}>Tasks</Link> |{" "}
+          <Link className="link" to="/todayTasksPage">Tasks For Today</Link>
+        </nav>
+        <Routes>
+          <Route path="/:id" element={<ToDoListPage />} />
+          <Route path="/todayTasksPage" element={<TodayTasksPage />} />
+        </Routes>
       </div>
-    </div>
+    </div >
   );
 }

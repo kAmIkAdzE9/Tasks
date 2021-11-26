@@ -1,22 +1,15 @@
 import React, { useState } from "react";
-import './Task.css'
+import './TaskForToday.css'
 import TaskAPI from "../../TaskAPI";
 
-export function Task(props) {
+export function TaskForToday(props) {
     const task = props.task;
     const [done, setDone] = useState(task.done);
     let classes = ['task'];
 
-    function updateDoneTasksDisplay() {
-        if(task.done) {
-            classes.push('task-done');
-            if(props.taskVisionMode) {
-                classes.push('hide-done-task');
-            }
-        }
+    if(task.done) {
+        classes.push('task-done');
     }
-
-    updateDoneTasksDisplay();
 
     function deleteTask() {
         TaskAPI.deleteTask(task.id);
@@ -28,8 +21,13 @@ export function Task(props) {
         setDone(task.done);
 
         TaskAPI.partialUpdateTask(task);
-        updateDoneTasksDisplay();
-        
+
+        if(task.done) {
+            classes.push('task-done');
+        }
+        else {
+            classes.pop();
+        }
         event.target.parentElement.className = classes.join(" ");
     }
 

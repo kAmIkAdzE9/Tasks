@@ -27,7 +27,3 @@
 .task-done #dueDate {
     color: red;
 }
-
-.hide-done-task{
-    display: none;
-}

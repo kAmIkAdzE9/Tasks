@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import Tasks from "../Tasks/Tasks";
+import TasksForToday from "../TasksForToday/TasksForToday";
 import TaskAPI from "../../TaskAPI";
 
 export default function TodayTasksPage() {
@@ -14,7 +14,7 @@ export default function TodayTasksPage() {
 
     return (
         <div>
-            <Tasks tasks={tasksForToday} removeTask={removeTaskForToday} />
+            <TasksForToday tasks={tasksForToday} removeTask={removeTaskForToday} />
         </div>
     )
 }

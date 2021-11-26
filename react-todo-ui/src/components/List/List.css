@@ -2,13 +2,11 @@
     display: flex;
     width: 200px;
     justify-content: center;
+    color: black;
+    text-decoration: none;
 }
 
 .list p {
     padding-left: 10px;
     text-align: center;
-}
-
-.active-list {
-    background-color: lightgreen;
 }

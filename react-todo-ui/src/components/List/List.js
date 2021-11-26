@@ -1,6 +1,6 @@
 import React from "react";
-import Lists from "../Lists/Lists";
 import './List.css'
+import { Link } from "react-router-dom";
 
 export default function List(props) {
 
@@ -9,9 +9,6 @@ export default function List(props) {
     }
 
     return (
-        <div className='list' onClick={onClickHandler}>
-            <h2>{props.title}</h2>
-            <p>({props.count})</p>
-        </div>
+        <Link className='list' to={`${props.id}`}><h2>{props.title}</h2><p>({props.count})</p></Link>
     )  
 }

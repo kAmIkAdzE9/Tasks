@@ -1,20 +1,19 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
+import './ToDoListPage.css' 
 import Tasks from '../Tasks/Tasks'
 import TaskForm from '../TaskForm/TaskForm';
 import TaskAPI from "../../TaskAPI";
-import {useParams} from "react-router";
+import { useParams } from "react-router";
 
 export default function ToDoListPage() {
+    const { id } = useParams();
     const [tasks, setTasks] = useState([]);
-    const [activeListId, setActiveListId] = useState(useParams().id);
-    useEffect(() => {renderTasks(activeListId)}, []);
+    const[taskVisionMode, setTaskVisionMode] = useState(true);
 
-    function renderTasks(listId) {
-        TaskAPI.getTasksFromList(listId).then(res => setTasks(res));
-    }
+    useEffect(() => { TaskAPI.getTasksFromList(id).then(res => setTasks(res)) }, [id]);
 
-    function removeTask(id) {
-        setTasks(tasks.filter(task => task.id !== id));
+    function removeTask(listId) {
+        setTasks(tasks.filter(task => task.id !== listId));
     }
 
     function addTask(res) {
@@ -24,10 +23,19 @@ export default function ToDoListPage() {
                 res
             ])
     }
+
+    function updateTaskVisionMode() {
+        setTaskVisionMode(!taskVisionMode);
+    }
+
     return (
         <div>
-            <Tasks tasks={tasks} removeTask={removeTask} />
-            <TaskForm addTask={addTask} activeListId={activeListId} setActiveListId={setActiveListId} />
+            <div id="mode">
+                <label>Show all tasks: </label>
+                <input type="checkbox" onClick={updateTaskVisionMode} />
+            </div>
+            <Tasks tasks={tasks} removeTask={removeTask} taskVisionMode={taskVisionMode}/>
+            <TaskForm addTask={addTask} id={id} />
         </div>
     )
 }
