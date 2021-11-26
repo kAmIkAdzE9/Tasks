@@ -6,7 +6,7 @@ import { useEffect } from "react";
 export default function Tasks(props) {
     return (
         <div className="tasks">
-            {props.tasks.map(task =><Task key={task.id} task={task} removeTask={props.removeTask} taskVisionMode={props.taskVisionMode}/>) }
+            {props.tasks.map(task =><Task key={task.id} task={task} removeTask={props.removeTask} updateTask={props.updateTask}/>) }
         </div>
     )
 }

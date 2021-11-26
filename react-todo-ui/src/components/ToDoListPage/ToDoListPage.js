@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import './ToDoListPage.css' 
+import './ToDoListPage.css'
 import Tasks from '../Tasks/Tasks'
 import TaskForm from '../TaskForm/TaskForm';
 import TaskAPI from "../../TaskAPI";
@@ -8,34 +8,45 @@ import { useParams } from "react-router";
 export default function ToDoListPage() {
     const { id } = useParams();
     const [tasks, setTasks] = useState([]);
-    const[taskVisionMode, setTaskVisionMode] = useState(true);
-
+    const [isVisibleDoneTasks, setIsVisibleDoneTasks] = useState(false);
     useEffect(() => { TaskAPI.getTasksFromList(id).then(res => setTasks(res)) }, [id]);
 
-    function removeTask(listId) {
-        setTasks(tasks.filter(task => task.id !== listId));
+    const filteredTasks = isVisibleDoneTasks ? tasks : tasks.filter(t => t.done == false);
+
+    function removeTask(id) {
+        TaskAPI.deleteTask(id);
+        setTasks(tasks.filter(task => task.id !== id));
     }
 
-    function addTask(res) {
-        setTasks(
-            [
-                ...tasks,
-                res
-            ])
+    function updateTask(task) {
+        TaskAPI.partialUpdateTask(task);
     }
 
-    function updateTaskVisionMode() {
-        setTaskVisionMode(!taskVisionMode);
+    function createTask(event) {
+        event.preventDefault();
+        console.log('qw')
+        let formData = new FormData(event.target);
+        let task = Object.fromEntries(formData.entries());
+        task.title = task.title.trim();
+        task.dueDate = new Date(task.dueDate);
+        task.id = '0';
+        task.taskListId = id;
+        if (task.title !== '') {
+            TaskAPI.createTask(task)
+                .then(res => setTasks([...tasks, res]))
+                .then(_ => event.target.reset())
+        }
     }
 
     return (
         <div>
-            <div id="mode">
-                <label>Show all tasks: </label>
-                <input type="checkbox" onClick={updateTaskVisionMode} />
+            <div id='show-all-tasks'>
+                <label>Show All Tasks</label>
+                <input type='checkbox' onClick={() => setIsVisibleDoneTasks(!isVisibleDoneTasks)} />
             </div>
-            <Tasks tasks={tasks} removeTask={removeTask} taskVisionMode={taskVisionMode}/>
-            <TaskForm addTask={addTask} id={id} />
+
+            <Tasks tasks={filteredTasks} removeTask={removeTask} updateTask={updateTask} />
+            <TaskForm createTask={createTask} />
         </div>
     )
 }

@@ -1,44 +1,21 @@
 import React, { useState } from "react";
 import './TaskForToday.css'
 import TaskAPI from "../../TaskAPI";
+import { Link } from "react-router-dom";
 
 export function TaskForToday(props) {
     const task = props.task;
     const [done, setDone] = useState(task.done);
-    let classes = ['task'];
-
-    if(task.done) {
-        classes.push('task-done');
-    }
-
-    function deleteTask() {
-        TaskAPI.deleteTask(task.id);
-        props.removeTask(task.id);
-    }
-
-    function updateTask(event) {
-        task.done = !task.done;
-        setDone(task.done);
-
-        TaskAPI.partialUpdateTask(task);
-
-        if(task.done) {
-            classes.push('task-done');
-        }
-        else {
-            classes.pop();
-        }
-        event.target.parentElement.className = classes.join(" ");
-    }
 
     return (
-        <div className={classes.join(" ")}>
+        <div className={'task' + (task.done ? ' task-done' : (new Date() > new Date(task.dueDate).setHours(23, 59, 59) ? ' task-with-expired-date' : ''))}>
+            <Link id='listName' to={`/todo-list/${task.taskList.id}`}>{task.taskList.title}</Link>
             <h2>{task.title}</h2>
             <label>Done: </label>
-            <input type="checkbox" checked={done} onChange={updateTask}/>
+            <input type="checkbox" checked={done} onChange={() => {task.done = !task.done; setDone(task.done); props.updateTask(task)}}/>
             <p>{task.description}</p>
             <p id="dueDate">{task.dueDate}</p>
-            <button onClick={deleteTask}>Delete</button>
+            <button onClick={() => props.removeTask(task.id)}>Delete</button>
         </div>
     )
 }

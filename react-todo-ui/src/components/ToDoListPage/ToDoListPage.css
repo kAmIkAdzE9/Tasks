@@ -1,4 +1,6 @@
-#mode {
-    text-align: center;
+#show-all-tasks {
     padding: 20px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
 }

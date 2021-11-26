@@ -4,17 +4,22 @@ import TasksForToday from "../TasksForToday/TasksForToday";
 import TaskAPI from "../../TaskAPI";
 
 export default function TodayTasksPage() {
-    const [tasksForToday, setTasksForToday] = useState([]);
+    const [tasks, setTasks] = useState([]);
+    useEffect(() => { TaskAPI.getTasksFoToday().then(res => setTasks(res)) }, [])
+    
+    function removeTask(id) {
+        TaskAPI.deleteTask(id);
+        setTasks(tasks.filter(task => task.id !== id));
+    }
 
-    useEffect(() => { TaskAPI.getTasksFoToday().then(res => setTasksForToday(res)) }, [])
-
-    function removeTaskForToday(id) {
-        setTasksForToday(tasksForToday.filter(task => task.id !== id));
+    function updateTask(task) {
+        TaskAPI.partialUpdateTask(task);
     }
 
     return (
         <div>
-            <TasksForToday tasks={tasksForToday} removeTask={removeTaskForToday} />
+            
+            <TasksForToday tasks={tasks} removeTask={removeTask} updateTask={updateTask}/>
         </div>
     )
 }

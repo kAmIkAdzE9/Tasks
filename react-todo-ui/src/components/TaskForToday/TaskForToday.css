@@ -24,6 +24,8 @@
     text-decoration: line-through;
 }
 
-.task-done #dueDate {
-    color: red;
+#listName {
+    color: black;
+    margin: 10px;
+    font-size: 24px;
 }

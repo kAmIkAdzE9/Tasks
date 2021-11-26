@@ -24,10 +24,6 @@
     text-decoration: line-through;
 }
 
-.task-done #dueDate {
+.task-with-expired-date #dueDate{
     color: red;
-}
-
-.hide-done-task{
-    display: none;
 }
