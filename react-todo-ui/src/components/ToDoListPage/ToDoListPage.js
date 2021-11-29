@@ -11,7 +11,7 @@ export default function ToDoListPage() {
     const [isVisibleDoneTasks, setIsVisibleDoneTasks] = useState(false);
     useEffect(() => { TaskAPI.getTasksFromList(id).then(res => setTasks(res)) }, [id]);
 
-    const filteredTasks = isVisibleDoneTasks ? tasks : tasks.filter(t => t.done == false);
+    const filteredTasks = isVisibleDoneTasks ? tasks : tasks.filter(t => t.done === false);
 
     function removeTask(id) {
         TaskAPI.deleteTask(id);

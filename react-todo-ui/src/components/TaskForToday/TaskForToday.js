@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import './TaskForToday.css'
-import TaskAPI from "../../TaskAPI";
 import { Link } from "react-router-dom";
 
 export function TaskForToday(props) {
