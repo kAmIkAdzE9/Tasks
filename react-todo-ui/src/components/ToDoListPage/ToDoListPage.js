@@ -4,27 +4,28 @@ import Tasks from '../Tasks/Tasks'
 import TaskForm from '../TaskForm/TaskForm';
 import TaskAPI from "../../TaskAPI";
 import { useParams } from "react-router";
-import { useDispatch } from "react-redux";
-import { updateCountOfTaskAfterAddTask, updateCountOfTaskAfterDeleteTask } from '../../store/dashboard/actions'
+import { useDispatch, useSelector } from "react-redux";
+import { updateCountOfTasksAfterAddTask, updateCountOfTasksAfterDeleteTask, updateCountOfTaskAfterUpdateTask} from '../../store/dashboard/actions'
 
 export default function ToDoListPage() {
     const { id } = useParams();
     const [tasks, setTasks] = useState([]);
-    const [isVisibleDoneTasks, setIsVisibleDoneTasks] = useState(false);
     useEffect(() => { TaskAPI.getTasksFromList(id).then(res => setTasks(res)) }, [id]);
 
-    const dispatch = useDispatch();
+    const [isVisibleDoneTasks, setIsVisibleDoneTasks] = useState(false);
 
+    const dispatch = useDispatch();
     const filteredTasks = isVisibleDoneTasks ? tasks : tasks.filter(t => t.done === false);
 
     function removeTask(id) {
         TaskAPI.deleteTask(id)
-            .then(res => res.ok ? dispatch(updateCountOfTaskAfterDeleteTask(tasks.filter(task => task.id == id)[0].taskListId)): console.log(res))
+            .then(res => res.ok ? dispatch(updateCountOfTasksAfterDeleteTask(tasks.filter(task => task.id == id)[0].taskListId)): console.log(res))
         setTasks(tasks.filter(task => task.id !== id));
     }
 
     function updateTask(task) {
-        TaskAPI.partialUpdateTask(task);
+        TaskAPI.partialUpdateTask(task)
+            .then(dispatch(updateCountOfTaskAfterUpdateTask(task.taskListId, task.done)))
     }
 
     function createTask(event) {
@@ -39,7 +40,7 @@ export default function ToDoListPage() {
             TaskAPI.createTask(task)
                 .then(res => setTasks([...tasks, res]))
                 .then(_ => event.target.reset())
-                .then(dispatch(updateCountOfTaskAfterAddTask(id)))
+                .then(dispatch(updateCountOfTasksAfterAddTask(id)))
         }
     }
 

@@ -1,5 +1,5 @@
 import TaskAPI from '../../TaskAPI'
-import {DASHBOARD_LOADED, TASK_ADDED, TASK_DELETED} from '../types'
+import {DASHBOARD_LOADED, TASK_ADDED, TASK_DELETED, TASK_STATUS_UPDATED} from '../types'
 
 export const loadDashboard = dispatch => {
     TaskAPI.getAllLists().then(res => dispatch({
@@ -8,5 +8,6 @@ export const loadDashboard = dispatch => {
     }))
 }
 
-export const updateCountOfTaskAfterAddTask = (payload) => ({type: TASK_ADDED, payload});
-export const updateCountOfTaskAfterDeleteTask = (payload) => ({type: TASK_DELETED, payload});
+export const updateCountOfTasksAfterAddTask = (payload) => ({type: TASK_ADDED, payload});
+export const updateCountOfTasksAfterDeleteTask = (payload) => ({type: TASK_DELETED, payload});
+export const updateCountOfTaskAfterUpdateTask = (taskListId, done) => ({type: TASK_STATUS_UPDATED, payload: {id: taskListId, done: done}});

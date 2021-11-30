@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import TasksForToday from "../TasksForToday/TasksForToday";
 import TaskAPI from "../../TaskAPI";
 import { useDispatch } from "react-redux";
-import {updateCountOfTaskAfterDeleteTask } from '../../store/dashboard/actions'
+import {updateCountOfTasksAfterDeleteTask, updateCountOfTaskAfterUpdateTask } from '../../store/dashboard/actions'
 
 export default function TodayTasksPage() {
     const [tasks, setTasks] = useState([]);
@@ -13,12 +13,13 @@ export default function TodayTasksPage() {
     
     function removeTask(id) {
         TaskAPI.deleteTask(id)
-            .then(res => res.ok ? dispatch(updateCountOfTaskAfterDeleteTask(tasks.filter(task => task.id == id)[0].taskList.id)): console.log(res))
+            .then(res => res.ok ? dispatch(updateCountOfTasksAfterDeleteTask(tasks.filter(task => task.id == id)[0].taskList.id)): console.log(res))
         setTasks(tasks.filter(task => task.id !== id));
     }
 
     function updateTask(task) {
-        TaskAPI.partialUpdateTask(task);
+        TaskAPI.partialUpdateTask(task)
+            .then(dispatch(updateCountOfTaskAfterUpdateTask(task.taskList.id, task.done)))
     }
 
     return (
