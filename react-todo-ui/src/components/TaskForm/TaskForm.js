@@ -1,7 +1,7 @@
 import React from "react";
 import './TaskForm.css'
 
-export default function TaskForm(props) {
+export default function TaskForm(props) {;
     return (
         <form id="task-form" name="task" onSubmit={props.createTask}>
             <input required type="text" name="title" placeholder="Title" />

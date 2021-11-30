@@ -1,20 +1,25 @@
 import './App.css';
-import TaskAPI from './TaskAPI';
 import Lists from './components/Lists/Lists';
 import TodayTasksPage from './components/TodayTasksPage/TodayTasksPage';
 import ToDoListPage from './components/ToDoListPage/ToDoListPage';
-import { useEffect, useState } from 'react';
-import { Routes, Route, Link} from "react-router-dom";
+import { useEffect } from 'react';
+import { Routes, Route, Link } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { loadDashboard } from './store/dashboard/actions'
 
 export default function App() {
-  const [lists, setLists] = useState([]);
+  // const [lists, setLists] = useState([]);
+  // useEffect(() => { TaskAPI.getAllLists().then(res => setLists(res[0].listAndCountOfNonDoneTasks)) }, []); 
 
-  useEffect(() => { TaskAPI.getAllLists().then(res => setLists(res[0].listAndCountOfNonDoneTasks)) }, [])
+  const dispatch = useDispatch();
+  useEffect(() => {
+    loadDashboard(dispatch);
+  }, [])
 
   return (
     <div className="App">
       <div id="app-sidebar">
-        <Lists lists={lists}/>
+        <Lists/>
       </div>
       <div id="app-content">
         <nav>

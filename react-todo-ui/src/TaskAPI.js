@@ -37,7 +37,6 @@ const TaskAPI = {
                 'Content-Type': 'application/json'
             }
         })
-        .then (response => console.log(response))
     },
 
     partialUpdateTask(task) {

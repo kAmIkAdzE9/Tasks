@@ -1,0 +1,3 @@
+export const DASHBOARD_LOADED = "DASHBOARD_LOADED"
+export const TASK_ADDED = "TASK_ADDED"
+export const TASK_DELETED = "TASK_DELETED"

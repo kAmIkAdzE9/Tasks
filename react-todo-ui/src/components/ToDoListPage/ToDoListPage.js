@@ -4,6 +4,8 @@ import Tasks from '../Tasks/Tasks'
 import TaskForm from '../TaskForm/TaskForm';
 import TaskAPI from "../../TaskAPI";
 import { useParams } from "react-router";
+import { useDispatch } from "react-redux";
+import { updateCountOfTaskAfterAddTask, updateCountOfTaskAfterDeleteTask } from '../../store/dashboard/actions'
 
 export default function ToDoListPage() {
     const { id } = useParams();
@@ -11,10 +13,13 @@ export default function ToDoListPage() {
     const [isVisibleDoneTasks, setIsVisibleDoneTasks] = useState(false);
     useEffect(() => { TaskAPI.getTasksFromList(id).then(res => setTasks(res)) }, [id]);
 
+    const dispatch = useDispatch();
+
     const filteredTasks = isVisibleDoneTasks ? tasks : tasks.filter(t => t.done === false);
 
     function removeTask(id) {
-        TaskAPI.deleteTask(id);
+        TaskAPI.deleteTask(id)
+            .then(res => res.ok ? dispatch(updateCountOfTaskAfterDeleteTask(tasks.filter(task => task.id == id)[0].taskListId)): console.log(res))
         setTasks(tasks.filter(task => task.id !== id));
     }
 
@@ -34,6 +39,7 @@ export default function ToDoListPage() {
             TaskAPI.createTask(task)
                 .then(res => setTasks([...tasks, res]))
                 .then(_ => event.target.reset())
+                .then(dispatch(updateCountOfTaskAfterAddTask(id)))
         }
     }
 
