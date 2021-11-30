@@ -3,4 +3,4 @@ export const TASK_ADDED = "TASK_ADDED"
 export const TASK_DELETED = "TASK_DELETED"
 export const TASK_STATUS_UPDATED = "TASK_STATUS_UPDATED"
 
-export const TASK_LOADED = "DASHBOARD_LOADED"
+export const TASKS_LOADED = "TASKS_LOADED"

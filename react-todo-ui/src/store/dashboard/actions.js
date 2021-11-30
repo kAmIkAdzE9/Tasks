@@ -9,5 +9,5 @@ export const loadDashboard = dispatch => {
 }
 
 export const updateCountOfTasksAfterAddTask = (payload) => ({type: TASK_ADDED, payload});
-export const updateCountOfTasksAfterDeleteTask = (payload) => ({type: TASK_DELETED, payload});
+export const updateCountOfTasksAfterDeleteTask = (taskListId, done) => ({type: TASK_DELETED, payload: {id: taskListId, done: done}});
 export const updateCountOfTaskAfterUpdateTask = (taskListId, done) => ({type: TASK_STATUS_UPDATED, payload: {id: taskListId, done: done}});

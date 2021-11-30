@@ -1,4 +1,4 @@
-import { TASK_LOADED } from '../types'
+import { TASKS_LOADED } from '../types'
 
 const defaultState = {
     tasks: []
@@ -6,7 +6,7 @@ const defaultState = {
 
 export default function tasksReducer(state = defaultState, action) {
     switch (action.type) {
-        case TASK_LOADED:
+        case TASKS_LOADED:
             return { tasks: action.payload }
         default:
             return state

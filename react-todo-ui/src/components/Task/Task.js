@@ -12,7 +12,7 @@ export function Task(props) {
             <input type="checkbox" checked={done} onChange={() => { task.done = !task.done; setDone(task.done); props.updateTask(task) }} />
             <p>{task.description}</p>
             <p id="dueDate">{task.dueDate}</p>
-            <button onClick={() => props.removeTask(task.id)}>Delete</button>
+            <button onClick={() => props.removeTask(task)}>Delete</button>
         </div>
     )
 }

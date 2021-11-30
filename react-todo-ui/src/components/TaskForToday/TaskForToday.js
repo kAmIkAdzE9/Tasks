@@ -14,7 +14,7 @@ export function TaskForToday(props) {
             <p>{task.description}</p>
             <p id="dueDate">{task.dueDate}</p>
             <Link id='listName' to={`/todo-list/${task.taskList.id}`}>{task.taskList.title}</Link>
-            <button onClick={() => props.removeTask(task.id)}>Delete</button>
+            <button onClick={() => props.removeTask(task)}>Delete</button>
         </div>
     )
 }

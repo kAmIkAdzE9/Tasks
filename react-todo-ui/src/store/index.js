@@ -5,8 +5,7 @@ import dashboardReducer from './dashboard/reducer'
 import tasksReducer from './tasks/reducer'
 
 export const rootReducer = combineReducers({
-    dashboard: dashboardReducer,
-    tasks: tasksReducer
+    dashboard: dashboardReducer
 })
 
 export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
