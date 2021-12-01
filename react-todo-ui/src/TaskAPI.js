@@ -14,7 +14,7 @@ const TaskAPI = {
             .then (response => response.ok ? response.json() : console.log(response))
     },
 
-    getTasksFoToday() {
+    getTasksForToday() {
         return fetch(collectionTodayEndpoint)
             .then (response => response.ok ? response.json() : console.log(response))
     },

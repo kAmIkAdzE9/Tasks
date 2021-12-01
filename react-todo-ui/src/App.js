@@ -13,8 +13,9 @@ export default function App() {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    loadDashboard(dispatch);
+    dispatch(loadDashboard);
   }, [])
+  
 
   return (
     <div className="App">
